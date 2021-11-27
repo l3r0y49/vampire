@@ -20,13 +20,9 @@
 
 namespace molecular_dynamics{
 
-   //----------------------------------------------------------------------------
-   // Function to initialize molecular_dynamics module
-   //----------------------------------------------------------------------------
-   void initialize(){
-
-      return;
-
+   namespace internal{
+         
+         
    }
 
 } // end of molecular_dynamics namespace

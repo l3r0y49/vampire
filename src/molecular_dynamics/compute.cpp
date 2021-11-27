@@ -30,8 +30,9 @@ namespace molecular_dynamics{
          double rm_2;
          double rm_6;
          double rm_12;
+         int i;
          
-         for(i=0,i<table_size,i++){ //may need internal::, whatch for i ob1 error
+         for(i=0;i<table_size;i++){ //may need internal::, watch for i ob1 error
             
             r_sq = r_sq_min + i * delta_r_sq;
             rm_2 = 1.0/r_sq;     //1/r^2
