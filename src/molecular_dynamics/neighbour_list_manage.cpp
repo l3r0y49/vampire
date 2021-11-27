@@ -21,12 +21,29 @@
 namespace molecular_dynamics{
 
    //----------------------------------------------------------------------------
-   // Function to initialize molecular_dynamics module
+   // Function to refold particles that left the box back into the box due to the periodic boundary conditions
    //----------------------------------------------------------------------------
-   void initialize(){
+   void refold_positions(){
+      //loop over array element wise
+      //c++ arrays go across then down
+      
+      for(i=0,i<positions.size(),i++){
+         
+         for(j=0,j<positions.size(),j++){
+            
+            //refold if out of box
+            if(positions[j][i]>0.5){
+               positions[j][i]=positions[j][i]-1.0
+            }
+            
+            //refold if out of box
+            if(positions[j][i]<-0.5){
+               positions[j][i]=positions[j][i]+1.0
+            }
+         }
+      }
 
       return;
-
    }
 
 } // end of molecular_dynamics namespace
