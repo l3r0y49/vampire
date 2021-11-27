@@ -40,24 +40,24 @@ namespace molecular_dynamics{
        //select 2D or 3D simulation
        const int dimensions;
        //velocities and acclerations known? i.e starting equaliberration or production stages
-       bool vel_acc
-       long unsigned int n;
+       bool vel_acc;
+       int n;
        std::vector<double> box_size;
-       std::vector<std::vector <double> > dispalcement;
+       std::vector<std::vector <double> > dispalcement;void refold_positions()
        std::vector<std::vector <double> > positions;
        std::vector<std::vector <double> > velocities;
        std::vector<std::vector <double> > accelerations;
-       std::vector<double> energy_potental:
-       std::vector<double> energy_kinetic:
+       std::vector<double> energy_potental;
+       std::vector<double> energy_kinetic;
        
        double volume;
        double density;
        double virial;   //virial term to compute pressure
        
-       //md simulation control properties
+       
        
        //!!!!!!!!!!may require some file name delcrations to store coords at various stages of run, ie in between equil and prod runs!!!!!!!!!!
-       
+       //md simulation control properties
        int N_equi_steps;        //steps in the equiliberation stage
        int N_prod_steps;        //steps in the production stage
        double delta_t;          //time steps
@@ -69,16 +69,16 @@ namespace molecular_dynamics{
        
        //Parameters and tables for the Lennard-Jones energy_potental
        
-       const double r_cuttof;   //cuttof distance
-       const double phi_cuttof; //potental at cuttoff
+       const double r_cuttoff;   //cuttof distance
+       const double phi_cuttoff; //potental at cuttoff
        const int table_size;
        const double r_min;
        const double r_sq_min;
        const double delta_r_sq;
        const double inv_delat_r_sq;
        
-       std::vector<double> phi_tab:
-       std::vector<double> d_phi_tab:   //phi(r),1/r dphi/dr
+       std::vector<double> phi_tab;
+       std::vector<double> d_phi_tab;   //phi(r),1/r dphi/dr
        
        //Statistical quantities accumulated during run
        
@@ -131,6 +131,16 @@ namespace molecular_dynamics{
       //-------------------------------------------------------------------------
       // Internal function declarations
       //-------------------------------------------------------------------------
+      
+      //neighbour_list_manage
+      void refold_positions();
+      
+      //compute
+      void define_potental_tables();
+      
+      //evolve
+      bool moved_too_much(skin);
+      void populate_1d_with_column_doubles(std::vector<int>& one_d_vector,std::vector<std::vector<int> >& two_d_vector,int index);
 
    } // end of internal namespace
 
