@@ -24,7 +24,7 @@ namespace molecular_dynamics{
       namespace internal{
 
          //----------------------------------------------------------------------------
-         // Function to 
+         // Function to assess the two largest displacements of the system, if their sum is larger than skin returns true
          //----------------------------------------------------------------------------
          bool moved_too_much(skin){
             double skin;
@@ -34,15 +34,28 @@ namespace molecular_dynamics{
             std::vector <double> temp_dispalcement_list;
             int i;
       
-            for(i=0;i<N-1;i++){
-               temp_dispalcement_list.clear()
-               temp_dispalcement_list.resize(dispalcement_list[0].size())
-            
-            
-               displ=std::sqrt(std::inner_product(dispalcement_list.begin(), dispalcement_list.end(), dispalcement_list.begin(), 0))
+            for(i=0;i<N;i++){
+               temp_dispalcement_list.clear();
+               temp_dispalcement_list.resize(dispalcement_list[0].size());
+               
+               populate_1d_with_column_int(temp_dispalcement_list,dispalcement_list,i);
+               
+               displ=std::sqrt(std::inner_product(temp_dispalcement_list.begin(), temp_dispalcement_list.end(), temp_dispalcement_list.begin(),0));
+               
+               if(displ>=displ1){
+                  displ2=displ1;
+                  displ1=displ;
+                  
+               }else if(displ>=displ2){
+                  displ2=displ;
+               }
             }
-      
-            return moved_too_much;
+            
+            if(displ1+displ2>skin){
+               return true;
+            }else{
+               return false;
+            }
          }
    
          //----------------------------------------------------------------------------
@@ -54,7 +67,7 @@ namespace molecular_dynamics{
             int i;
             //copy the column of the 2d vector into the row of the 1d vector
             for(i=0;i<two_d_vector[index].size();i++){
-               one_d_vector[i] = two_d_vector[index][i];
+               one_d_vector[i] = two_d_vector[i][index];
             }
       
             return;
