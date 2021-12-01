@@ -102,12 +102,24 @@ namespace molecular_dynamics{
                   energy_potental(i) += 0.5*phi;     //accumulate energy
                   energy_potental(j) += 0.5*phi;     //shared bewteen i&j
                   virial -= dphi*r_sqij;             //accum. virial sum r(dv/dr)
-                  acc[i] += d_phi*sij                //accum. forces (Fij = -Fji)
-                  acc[j] -= d_phi*sij 
+                  acc[i] += d_phi*sij;                //accum. forces (Fij = -Fji)
+                  acc[j] -= d_phi*sij; 
                }
             }
          }
-      viral = -viral/dimensions                    //virial term
+      viral = -viral/dimensions;                    //virial term
+      }
+      
+      void compute_temperature(double energy_kin_aver,double temperature){
+         std::vector<double> real_val;
+         int i;
+         
+         for(i=0;i<N;i++){ //ob1 error?
+            real_vel = box_size*vel[i];
+            energy_kinetic(i) = 0.5*std::inner_product(real_vel,real_vel);
+         }
+         energy_kin_aver = std::accumulate(energy_kinetic.begin(), energy_kinetic.end(),0)/n;
+         temperature = 2.0*energy_kin_aver/dimensions;
       }
       
    }
