@@ -43,7 +43,7 @@ namespace molecular_dynamics{
        bool vel_acc;
        int n;
        std::vector<double> box_size;
-       std::vector<std::vector <double> > dispalcement;void refold_positions()
+       std::vector<std::vector <double> > dispalcement;
        std::vector<std::vector <double> > positions;
        std::vector<std::vector <double> > velocities;
        std::vector<std::vector <double> > accelerations;
@@ -53,8 +53,6 @@ namespace molecular_dynamics{
        double volume;
        double density;
        double virial;   //virial term to compute pressure
-       
-       
        
        //!!!!!!!!!!may require some file name delcrations to store coords at various stages of run, ie in between equil and prod runs!!!!!!!!!!
        //md simulation control properties

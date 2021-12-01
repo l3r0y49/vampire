@@ -31,17 +31,16 @@ namespace molecular_dynamics{
          int j;
       
          for(i=0;i<positions.size();i++){
-         
             for(j=0;j<positions.size();j++){
             
                //refold if out of box
                if(positions[j][i]>0.5){
-                  positions[j][i]=positions[j][i]-1.0
+                  positions[j][i]-=1.0
                }
             
                //refold if out of box
                if(positions[j][i]<-0.5){
-                  positions[j][i]=positions[j][i]+1.0
+                  positions[j][i]+=1.0
                }
             }
          }

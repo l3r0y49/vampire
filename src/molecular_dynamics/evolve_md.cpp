@@ -31,12 +31,14 @@ namespace molecular_dynamics{
             double displ;
             double displ1=0.0;
             double displ2=0.0;
-            std::vector <double> temp_dispalcement_list;
+            std::vector <double> temp_dispalcement_list(3);
             int i;
       
             for(i=0;i<N;i++){
-               temp_dispalcement_list.clear();
-               temp_dispalcement_list.resize(dispalcement_list[0].size());
+               //set size to 0 and then to required to 
+               temp_dispalcement_list.resize(0);
+               temp_dispalcement_list.resize(3);
+//                temp_dispalcement_list.resize(dispalcement_list[0].size());
                
                populate_1d_with_column_int(temp_dispalcement_list,dispalcement_list,i);
                
