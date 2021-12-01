@@ -26,23 +26,26 @@ namespace molecular_dynamics{
          //----------------------------------------------------------------------------
          // Function to assess the two largest displacements of the system, if their sum is larger than skin returns true
          //----------------------------------------------------------------------------
-         bool moved_too_much(skin){
+            bool moved_too_much(skin){
             double skin;
             double displ;
             double displ1=0.0;
             double displ2=0.0;
-            std::vector <double> temp_dispalcement_list(3);
+            ///std::vector <double> temp_dispalcement_list(3);
             int i;
       
             for(i=0;i<N;i++){
                //set size to 0 and then to required to 
-               temp_dispalcement_list.resize(0);
-               temp_dispalcement_list.resize(3);
-//                temp_dispalcement_list.resize(dispalcement_list[0].size());
                
-               populate_1d_with_column_int(temp_dispalcement_list,dispalcement_list,i);
+               ///temp_dispalcement_list.resize(0);
+               ///temp_dispalcement_list.resize(3);
+               //temp_dispalcement_list.resize(dispalcement_list[0].size());
                
-               displ=std::sqrt(std::inner_product(temp_dispalcement_list.begin(), temp_dispalcement_list.end(), temp_dispalcement_list.begin(),0));
+               ///populate_1d_with_column_int(temp_dispalcement_list,dispalcement_list,i);
+               
+//                displ=std::sqrt(std::inner_product(temp_dispalcement_list.begin(), temp_dispalcement_list.end(), temp_dispalcement_list.begin(),0));
+               
+               displ=std::sqrt(std::inner_product(dispalcement_list[i].begin(), dispalcement_list[i].end(), dispalcement_list[i].begin(),0));
                
                if(displ>=displ1){
                   displ2=displ1;
@@ -64,17 +67,17 @@ namespace molecular_dynamics{
          // Routine to populate an 1d vector of doubles with the given column of a 2d vector of doubles (of the same size)
          //----------------------------------------------------------------------------
    
-         void populate_1d_with_column_doubles(std::vector<int>& one_d_vector,std::vector<std::vector<int> >& two_d_vector,int index){
-      
-            int i;
-            //copy the column of the 2d vector into the row of the 1d vector
-            for(i=0;i<two_d_vector[index].size();i++){
-               one_d_vector[i] = two_d_vector[i][index];
-            }
-      
-            return;
-         }
-      }
+//          void populate_1d_with_column_doubles(std::vector<int>& one_d_vector,std::vector<std::vector<int> >& two_d_vector,int index){
+//       
+//             int i;
+//             //copy the column of the 2d vector into the row of the 1d vector
+//             for(i=0;i<two_d_vector[index].size();i++){
+//                one_d_vector[i] = two_d_vector[i][index];
+//             }
+//       
+//             return;
+//          }
+//       }
    
 } // end of molecular_dynamics namespace
 

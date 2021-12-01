@@ -50,6 +50,20 @@ namespace molecular_dynamics{
        std::vector<double> energy_potental;
        std::vector<double> energy_kinetic;
        
+       //double vector array structure 
+       
+       /*
+        array[0] = {a,b,c}
+             x    y    z
+        0   [a]  [b]  [c]
+        1   [d]  [e]  [f]
+        2   [g]  [h]  [i]
+        .
+        .
+       N-2  [k]  [l]  [m]
+       N-1  [n]  [o]  [p]
+        */
+       
        double volume;
        double density;
        double virial;   //virial term to compute pressure
@@ -135,6 +149,7 @@ namespace molecular_dynamics{
       
       //compute
       void define_potental_tables();
+      void compute_forces();
       
       //evolve
       bool moved_too_much(skin);

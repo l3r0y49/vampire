@@ -48,12 +48,9 @@ namespace molecular_dynamics{
       //----------------------------------------------------------------------------
       void compute_forces(){
          std::vector<double> sij(dimensions),rij(dimensions);
-         std::vector<double> temp_1d_pos_i(3),temp_1d_pos_j(3);
+//          std::vector<double> temp_1d_pos_i(3),temp_1d_pos_j(3);
          double r_sqij,phi,d_phi,rk,weight;
          int i,j,k,l,m;
-         
-         Sij.resize(dimensions);
-         Rij.resize(dimensions);
          
          //reset force, potental energy and virial terms
          accelerations.resize(0,std::vector<double>(0));
@@ -68,15 +65,18 @@ namespace molecular_dynamics{
                j = list(l);
                
                //reset 1d position vector containers values without deallocating memory
-               temp_1d_pos_1.resize(0);
-               temp_1d_pos_2.resize(0);
-               temp_1d_pos_1.resize(3);
-               temp_1d_pos_2.resize(3);
+//                temp_1d_pos_1.resize(0);
+//                temp_1d_pos_2.resize(0);
+//                temp_1d_pos_1.resize(3);
+//                temp_1d_pos_2.resize(3);
                //extract i and j atom positions
-               populate_1d_with_column_doubles(temp_1d_pos_i,positions,i);
-               populate_1d_with_column_doubles(temp_1d_pos_j,positions,j);
+               
+//                populate_1d_with_column_doubles(temp_1d_pos_i,positions,i);
+//                populate_1d_with_column_doubles(temp_1d_pos_j,positions,j);
+               
                //distance between i and j
-               sij = temp_1d_pos_i - temp_1d_pos_j;
+//                sij = temp_1d_pos_i - temp_1d_pos_j;
+               sij = positions[i] - positions[j];
                
                //apply boundary conditions where needed
                for(m=0;m<sij;m++){
@@ -103,12 +103,11 @@ namespace molecular_dynamics{
                   energy_potental(j) += 0.5*phi;     //shared bewteen i&j
                   virial -= dphi*r_sqij;             //accum. virial sum r(dv/dr)
                   acc[i] += d_phi*sij                //accum. forces (Fij = -Fji)
-                  acc[j] += d_phi*sij 
+                  acc[j] -= d_phi*sij 
                }
             }
-            
-            
          }
+      viral = -viral/dimensions                    //virial term
       }
       
    }
