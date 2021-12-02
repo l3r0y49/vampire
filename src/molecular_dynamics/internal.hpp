@@ -101,10 +101,10 @@ namespace molecular_dynamics{
        
        //Neighbour list properties
        const int max_pairs_per_atom;
-       std::vector<double> advance;
-       std::vector<double> marker_1;
-       std::vector<double> marker_2;
-       std::vector<double> list;
+       std::vector<int> advance;
+       std::vector<int> marker_1;
+       std::vector<int> marker_2;
+       std::vector<int> list;
        int max_list_length;
        int list_length;
        std::vector<std::vector <double> > dispalcement_list;

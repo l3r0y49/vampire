@@ -11,7 +11,8 @@
 //
 
 // C++ standard library headers
-
+#include <cstdio>
+#include <cmath>
 // Vampire headers
 #include "molecular_dynamics.hpp"
 
@@ -32,12 +33,10 @@ namespace molecular_dynamics{
       
          for(i=0;i<positions.size();i++){
             for(j=0;j<positions.size();j++){
-            
                //refold if out of box
                if(positions[j][i]>0.5){
                   positions[j][i]-=1.0
                }
-            
                //refold if out of box
                if(positions[j][i]<-0.5){
                   positions[j][i]+=1.0
@@ -47,7 +46,72 @@ namespace molecular_dynamics{
 
          return;
       }
+      //----------------------------------------------------------------------------
+      // Update the neighbour list, include all atom paris that are
+      // within range of each other
+      
+      // The Fincham-Ralston method is used (D. Fincham and B.J. Ralston,
+      // Comp.Phys.Comm. 23, 127 (1981) ), which allows vectorization of the
+      // first of the two inner loop on vector computers and therefore gives
+      // good performance.
+      //----------------------------------------------------------------------------
+      void update_list(double range){
+         double range_sq;
+         std::vector<double> sij(dimensions),rij(dimensions);
+         double r_sqij
+         int i,j,l,m;
+         
+         printf("Neighbour list update \n");
+         
+         range_sq = pow(range,2);
+         
+         //Fincham_Ralston loop for list updates
+         
+         l=0;
+         for(i=0;i<n;i++){
+            for(j=i+1;j<n;j++){
+             sij = positions[i] - positions[j];
+             
+             //apply boundary conditions where needed
+               for(m=0;m<sij;m++){
+                  if(sij(m)>0.5){
+                     sij(m)-=1.0 ;
+                  }else if(sij(m)<0.5){
+                        sij(m)+=1.0;
+                  }
+               }
+               rij=box_size*sij;  //real space units
+               r_sqij=std::inner_product(rij,rij);  //square distance
+               
+               if(r_sqij<range_sq){ //is j an neighbour of i?
+                  advance[j]=1.0;    //yes
+               }else{
+                  advance[j]=0.0;     //no
+               }
+            }
+            marker_1[i]=l;
+            for(j=i+1;j<n;j++){
+               if(l>max_list_length){
+                  printf("update_list: FATAL: list too small for skin \n");
+                  printf("%i value of parameter max_pairs_per_atom needs increasing\n",max_pairs_per_atom);
+                  std::exit;
+               }
+               list(l)=j;
+               l+=advance[j];
+            }
+            marker_2[i]=l-1.0;
+         }
+      list_length= l-1;
+               
+      printf("%i index in list \n",list_length);
+      
+      dispalcement_list.resize(0,std::vector<double>(0));
+      dispalcement_list.resize(dimensions,std::vector<double>(n));
+      
+      return;
       }
+      
+   }
 
 } // end of molecular_dynamics namespace
 

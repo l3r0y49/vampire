@@ -21,7 +21,7 @@
 namespace molecular_dynamics{
 
    namespace internal{
-         
+         // output routines and deallocate vectors if necessary 
          
    }
 
