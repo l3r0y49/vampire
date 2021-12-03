@@ -68,8 +68,8 @@ namespace molecular_dynamics{
          //Fincham_Ralston loop for list updates
          
          l=0;
-         for(i=0;i<n;i++){
-            for(j=i+1;j<n;j++){
+         for(i=0;i<N;i++){
+            for(j=i+1;j<N;j++){
              sij = positions[i] - positions[j];
              
              //apply boundary conditions where needed
@@ -90,7 +90,7 @@ namespace molecular_dynamics{
                }
             }
             marker_1[i]=l;          //start list for i
-            for(j=i+1;j<n;j++){
+            for(j=i+1;j<N;j++){
                if(l>max_list_length){
                   printf("update_list: FATAL: list too small for skin \n");
                   printf("%i value of parameter max_pairs_per_atom needs increasing\n",max_pairs_per_atom);
@@ -106,7 +106,7 @@ namespace molecular_dynamics{
       printf("%i index in list \n",list_length);
       
       dispalcement_list.resize(0,std::vector<double>(0));
-      dispalcement_list.resize(dimensions,std::vector<double>(n));
+      dispalcement_list.resize(dimensions,std::vector<double>(N));
       
       return;
       }

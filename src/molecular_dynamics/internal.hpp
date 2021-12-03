@@ -41,7 +41,7 @@ namespace molecular_dynamics{
        const int dimensions;
        //velocities and acclerations known? i.e starting equaliberration or production stages
        bool vel_acc;
-       int n;
+       int N;
        std::vector<double> box_size;
        std::vector<std::vector <double> > dispalcement;
        std::vector<std::vector <double> > positions;
@@ -154,11 +154,14 @@ void update_list(double range)
       
       //evolve
       bool moved_too_much(skin);
-      void evolve_sample(int N_steps)
+      void evolve_sample(int N_steps);
 //       void populate_1d_with_column_doubles(std::vector<int>& one_d_vector,std::vector<std::vector<int> >& two_d_vector,int index);
       
       //main
-      void md_main()
+      void md_main();
+      
+      //generate_coords
+      void generate_crystal(double atomic_lattice,int nx,int ny,int nz,double dispalc);
 
    } // end of internal namespace
 

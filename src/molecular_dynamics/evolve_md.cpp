@@ -101,7 +101,7 @@ namespace molecular_dynamics{
                compute_forces();                                           //a(t+dt)
                velocities=velocities + 0.5*displacement*accelerations;    //v(t+dt)
                compute_temperature(ene_kin_aver,temperature);              // at t+dt, energy_kinetic
-               energy_kin_aver = std::accumulate(energy_potental.begin(), energy_potental.end(),0)/n;
+               energy_kin_aver = std::accumulate(energy_potental.begin(), energy_potental.end(),0)/N;
                ene_tot_aver = ene_kin_aver + ene_pot_aver;
                
                //pressure calculation, see the Allen and Tildesley book, section 2.4
@@ -109,7 +109,7 @@ namespace molecular_dynamics{
                pressure = density*temperature + viral/volume;
                
                //update displacement list
-               for(i=0;i<n;i++){
+               for(i=0;i<N;i++){
                   dispalcement_list[i] = dispalcement_list[j] + box_size*displacement[j];
                }
                //deterioration test, if moved too much relative to skin

@@ -36,7 +36,7 @@ namespace molecular_dynamics{
       
       const int dimensions=3; //switches between 3D & 2D
       bool vel_acc=false;
-      int n=0;
+      int N=0;
       
       //resize box_size now that dimensions has a value
       box_size.resize(dimensions)

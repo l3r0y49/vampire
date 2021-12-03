@@ -54,12 +54,12 @@ namespace molecular_dynamics{
          
          //reset force, potental energy and virial terms
          accelerations.resize(0,std::vector<double>(0));
-         accelerations.resize(dimensions,std::vector<double>(n));
+         accelerations.resize(dimensions,std::vector<double>(N));
          energy_potental.resize(0);
-         energy_potental.resize(n);
+         energy_potental.resize(N);
          virial=0.0;
          
-         for(i=0;i<n;i++){
+         for(i=0;i<N;i++){
             //useful part of neighbour list
             for(l=marker_1(i);l<=marker_2(i);l++){
                j = list(l);
@@ -118,7 +118,7 @@ namespace molecular_dynamics{
             real_vel = box_size*vel[i];
             energy_kinetic(i) = 0.5*std::inner_product(real_vel,real_vel);
          }
-         energy_kin_aver = std::accumulate(energy_kinetic.begin(), energy_kinetic.end(),0)/n;
+         energy_kin_aver = std::accumulate(energy_kinetic.begin(), energy_kinetic.end(),0)/N;
          temperature = 2.0*energy_kin_aver/dimensions;
       }
       

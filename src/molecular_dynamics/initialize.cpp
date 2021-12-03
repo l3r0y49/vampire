@@ -25,10 +25,13 @@ namespace moleculardynamics{
    //----------------------------------------------------------------------------
    void initialize(){
          
-         //call routine to read in system params
-      
+         //call routine to read in system params and define necessary arrays
+         //set up data structures
+         
          // call md driver
          main_md();
+         //end run
+         terminate();
          
       return;
 
