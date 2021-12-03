@@ -109,6 +109,15 @@ namespace molecular_dynamics{
        int list_length;
        std::vector<std::vector <double> > dispalcement_list;
        
+       //sample required values
+       double atomic_lattice;
+       int nx;
+       int ny;
+       int nz;
+       double dispalc;
+       double cut_off_LJ;
+       double cut_off_Al;
+       
       //-----------------------------------------------------------------------------
       // internal materials class for storing material parameters
       //-----------------------------------------------------------------------------
@@ -161,7 +170,8 @@ void update_list(double range)
       void md_main();
       
       //generate_coords
-      void generate_crystal(double atomic_lattice,int nx,int ny,int nz,double dispalc);
+      //double atomic_lattice,int nx,int ny,int nz,double dispalc
+      void generate_crystal();
       T random();
       
       //terminate
@@ -171,6 +181,7 @@ void update_list(double range)
       
       //initalise
       void inital_printout();
+      void read_input();
 
    } // end of internal namespace
 

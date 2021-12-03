@@ -24,12 +24,48 @@ namespace moleculardynamics{
    // Function to initialize molecular_dynamics module
    //----------------------------------------------------------------------------
    void initialize(){
-
-         // call md driver
-         main_md();
-         
+      
+      // call md driver
+      main_md();
       return;
+   }
+   
+   void initalize_values(){
+      
+   }
+   
+   void read_input(){
+      //sample values
+      //hardwired values to be read in from file once file I/O implemented
+      /*
+      **implement reminder in file I/0**
+      cut_off_LJ = 2.5;
+       */
+      atomic_lattice=1.5496;
+      nx=4;
+      ny=4;
+      nz=4;
+      dispalc=0.1;
 
+      //simulation values
+      //hardwired values to be read in from file once file I/O implemented
+       N_equi_steps=10000;
+       N_prod_steps=pow(2.0,13); //exponent of 13-18 known to work from MD module
+       delta_t=0.004;
+       rho_requested=0.7;
+       t_requested=1.5;
+       skin=0.1;
+       
+       if(rho_requested>0.0){
+         change_rho = true;
+       }else{
+          change_rho = false;
+       }
+       if(t_requested>0.0){
+         t_constat = true;
+       }else{
+          t_constat = false;
+       }
    }
    
    void inital_printout(){

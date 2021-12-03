@@ -56,6 +56,9 @@ namespace molecular_dynamics{
       
       const int max_pairs_per_atom = 100;
       
+      const double cut_off_LJ = 2.5;
+      const double cut_off_Al = 5.55805441821810;
+      
    } // end of internal namespace
 
 } // end of molecular_dynamics namespace

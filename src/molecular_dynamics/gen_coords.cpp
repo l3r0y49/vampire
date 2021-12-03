@@ -22,7 +22,8 @@ namespace molecular_dynamics{
 
    namespace internal{
          
-      void generate_crystal(double atomic_lattice,int nx,int ny,int nz,double dispalc){
+      void generate_crystal(){
+         //double atomic_lattice,int nx,int ny,int nz,double dispalc
          const int crtout = 6;
          std::vector<double>rands(3);
          int i,j,k,l,n_count;

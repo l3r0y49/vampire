@@ -25,11 +25,11 @@ namespace molecular_dynamics{
       void md_main(){
          
          //read_in_params()
-         
+         read_input();
          //set up data structures
-         
+         initalize_values();
          //generate coords
-         crystal_generate();
+         generate_crystal(atomic_lattice,nx,ny,nz,dispalc);
          //derive potentals
          define_potental_tables();
          //inital printout

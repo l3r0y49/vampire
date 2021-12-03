@@ -24,11 +24,10 @@ namespace molecular_dynamics{
          // output routines and deallocate vectors if necessary
       
          void terminate(){
+            
             //output routines
-            
             print_statistcs();
-            
-            //write_sample(); 
+            write_sample(); 
             //- may want to call at step intervals during production stage to get visulisation of atom movements over time
             
             //clear vectors to clean memory
@@ -50,10 +49,11 @@ namespace molecular_dynamics{
          
       void print_statistics(){
          
-         if(N_steps <= 0){
+         if(N_steps <= 0){ //protect from N=0 situation
             return;
          }
-         printf("# Means %f %f %f %f %f \n",temperature_sum/Nsteps, ene_kin_sum/Nsteps, ene_pot_sum/ Nsteps, (ene_kin_sum+ ene_pot_sum)/Nsteps, pressure_sum / Nsteps)
+         //print all stats for production phase
+         printf("# Means %f %f %f %f %f \n",temperature_sum/N_prod_steps, energy_kinetic_sum/N_prod_steps, energy_potental_sum/N_prod_steps, (energy_kinetic_sum+energy_potental_sum)/N_prod_steps, pressure_sum/N_prod_steps);
          
          return;
       }
@@ -61,6 +61,7 @@ namespace molecular_dynamics{
       void write_sample(){
          int i;
          vel_acc=true;
+         //print out all real space positions
          
          for(i=0;i<N;i++){
             printf("%f %f %f\n",positions[i][0]*box_size,positions[i][1]*box_size,positions[i][2]*box_size);
