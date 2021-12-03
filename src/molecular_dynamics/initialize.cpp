@@ -24,7 +24,12 @@ namespace moleculardynamics{
    // Function to initialize molecular_dynamics module
    //----------------------------------------------------------------------------
    void initialize(){
-
+         
+         //call routine to read in system params
+      
+         // call md driver
+         main_md();
+         
       return;
 
    }
