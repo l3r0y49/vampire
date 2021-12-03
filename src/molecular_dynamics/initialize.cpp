@@ -48,6 +48,10 @@ namespace moleculardynamics{
          printf("# Free evolution run\n");
       }
       printf("# skin: %f maximum neighbor list length: %i \n",skin,max_list_length);
+      
+      printf("#\n");
+      printf("# Step   Temperature     Kinetic      Potential   Total Energy    Pressure\n");
+      printf("# -----  ------------  ------------  ------------  ------------  ------------\n");
    }
 
 } // end of molecular_dynamics namespace
