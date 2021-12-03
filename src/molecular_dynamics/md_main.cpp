@@ -23,16 +23,24 @@ namespace molecular_dynamics{
    namespace internal{
          
       void md_main(){
+         
+         //read_in_params()
+         
+         //set up data structures
+         
          //generate coords
          crystal_generate();
+         //derive potentals
+         define_potental_tables();
+         //inital printout
+         inital_printout();
          //equaliberation run
          evolve_sample(N_equi_steps);
          //production run
          evolve_sample(N_prod_steps);
          //end run
          terminate();
-      }
-         
+      }       
    }
 
 } // end of molecular_dynamics namespace

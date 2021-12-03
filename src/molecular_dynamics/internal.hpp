@@ -75,7 +75,7 @@ namespace molecular_dynamics{
        double delta_t;          //time steps
        double rho_requested;    //desired density
        double t_requested;      //desired temperature
-       bool change_roh;         //true when user is changing density
+       bool change_rho;         //true when user is changing density
        bool t_constat;          //becomes true when t_requested >=0
        double skin;             //additional range in neigbour list
        
@@ -167,6 +167,10 @@ void update_list(double range)
       //terminate
       void terminate();
       void print_statistics();
+      void write_sample();
+      
+      //initalise
+      void inital_printout();
 
    } // end of internal namespace
 
