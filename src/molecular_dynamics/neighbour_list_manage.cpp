@@ -89,19 +89,19 @@ namespace molecular_dynamics{
                   advance[j]=0.0;     //no
                }
             }
-            marker_1[i]=l;
+            marker_1[i]=l;          //start list for i
             for(j=i+1;j<n;j++){
                if(l>max_list_length){
                   printf("update_list: FATAL: list too small for skin \n");
                   printf("%i value of parameter max_pairs_per_atom needs increasing\n",max_pairs_per_atom);
                   std::exit;
                }
-               list(l)=j;
-               l+=advance[j];
+               list(l)=j;     //j included
+               l+=advance[j]; //only if advance(j) is 1 
             }
-            marker_2[i]=l-1.0;
+            marker_2[i]=l-1;  //end of list for l
          }
-      list_length= l-1;
+      list_length= l-1;    //final lenght of list
                
       printf("%i index in list \n",list_length);
       

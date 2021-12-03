@@ -139,13 +139,14 @@ namespace molecular_dynamics{
       extern bool enabled; // bool to enable module
 
       extern std::vector<internal::mp_t> mp; // array of material properties
-
+void update_list(double range)
       //-------------------------------------------------------------------------
       // Internal function declarations
       //-------------------------------------------------------------------------
       
       //neighbour_list_manage
       void refold_positions();
+      void update_list(double range);
       
       //compute
       void define_potental_tables();
@@ -153,7 +154,8 @@ namespace molecular_dynamics{
       
       //evolve
       bool moved_too_much(skin);
-      void populate_1d_with_column_doubles(std::vector<int>& one_d_vector,std::vector<std::vector<int> >& two_d_vector,int index);
+      void evolve_sample(int N_steps)
+//       void populate_1d_with_column_doubles(std::vector<int>& one_d_vector,std::vector<std::vector<int> >& two_d_vector,int index);
 
    } // end of internal namespace
 

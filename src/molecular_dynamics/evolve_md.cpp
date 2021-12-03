@@ -62,6 +62,70 @@ namespace molecular_dynamics{
                return false;
             }
          }
+         
+         //----------------------------------------------------------------------------
+         // Main routine that controls the time evolution of the system
+         //----------------------------------------------------------------------------
+         
+         void evolve_sample(int N_steps){
+            int step,i;
+            double ene_kin_aver,ene_pot_aver,ene_tot_aver,temperature,pressure,chi;
+            bool list_update_requested = true;
+            std::vector<double> dispalcement_sqr
+            
+            compute_temperature(ene_kin_aver,temperature);
+            
+            //"Velocity Verlet" Integrator (see e.g. Allen and Tildesley book, p. 81)
+            // velocity scaling applied when constant_t is enabled
+            
+            for(step=1;step<=N_steps;step++){
+               
+               refold_positions();
+               //genarate square of displacements
+               std::transform(dispalcement.begin(),dispalcement.end(),dispalcement_sqr,multiplies<double>());
+               dispalcement =dispalcement*velocities + 0.5*(dispalcement)*accelerations;   //dr = r(t+dt) -r (t)
+               
+               positions += dispalcement;  // r(t+dt)
+               
+               if(constant_t && (temperature>0)){  //velocity rescale for constant temp.
+                  compute_temperature(ene_kin_aver,temperature);
+                  chi = sqrt(t_requested/temperature);
+                  velocities = chi*velocities + 0.5*dispalcement*accelerations; //v(t+dt/2) (scaled)
+               } else {
+                  velocities = velocities + 0.5*dispalcement*accelerations; //v(t+dt/2)
+               }
+               if(list_update_requested){       //update required
+                  update_list(r_cuttoff+skin);  //do update
+                  list_update_requested=false;  //updated
+               }
+               compute_forces();                                           //a(t+dt)
+               velocities=velocities + 0.5*displacement*accelerations;    //v(t+dt)
+               compute_temperature(ene_kin_aver,temperature);              // at t+dt, energy_kinetic
+               energy_kin_aver = std::accumulate(energy_potental.begin(), energy_potental.end(),0)/n;
+               ene_tot_aver = ene_kin_aver + ene_pot_aver;
+               
+               //pressure calculation, see the Allen and Tildesley book, section 2.4
+               
+               pressure = density*temperature + viral/volume;
+               
+               //update displacement list
+               for(i=0;i<n;i++){
+                  dispalcement_list[i] = dispalcement_list[j] + box_size*displacement[j];
+               }
+               //deterioration test, if moved too much relative to skin
+               //list update scheduled for next step
+               list_update_requested=moved_too_much(skin);
+               
+               printf("%i %f %f %f %f \n",step,temperature,ene_kin_aver,ene_pot_aver,pressure); //**make wtite out to file once I/O routines are set up**
+               
+               //accumlate stats
+               temperature_sum += temperature;
+               energy_kinetic_sum += ene_kin_aver;
+               energy_potental_sum += ene_pot_aver;
+               pressure_sum += pressure;
+            }
+            
+         }
    
          //----------------------------------------------------------------------------
          // Routine to populate an 1d vector of doubles with the given column of a 2d vector of doubles (of the same size)
