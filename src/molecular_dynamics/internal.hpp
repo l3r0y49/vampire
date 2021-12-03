@@ -162,6 +162,11 @@ void update_list(double range)
       
       //generate_coords
       void generate_crystal(double atomic_lattice,int nx,int ny,int nz,double dispalc);
+      T random();
+      
+      //terminate
+      void terminate();
+      void print_statistics();
 
    } // end of internal namespace
 

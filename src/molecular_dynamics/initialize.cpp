@@ -28,10 +28,10 @@ namespace moleculardynamics{
          //call routine to read in system params and define necessary arrays
          //set up data structures
          
+         //read_in_params()
+      
          // call md driver
          main_md();
-         //end run
-         terminate();
          
       return;
 
