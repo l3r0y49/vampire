@@ -156,6 +156,9 @@ void update_list(double range)
       bool moved_too_much(skin);
       void evolve_sample(int N_steps)
 //       void populate_1d_with_column_doubles(std::vector<int>& one_d_vector,std::vector<std::vector<int> >& two_d_vector,int index);
+      
+      //main
+      void md_main()
 
    } // end of internal namespace
 
