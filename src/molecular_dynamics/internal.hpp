@@ -148,7 +148,7 @@ namespace molecular_dynamics{
       extern bool enabled; // bool to enable module
 
       extern std::vector<internal::mp_t> mp; // array of material properties
-void update_list(double range)
+      
       //-------------------------------------------------------------------------
       // Internal function declarations
       //-------------------------------------------------------------------------

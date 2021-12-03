@@ -62,11 +62,9 @@ namespace molecular_dynamics{
          int i,j,l,m;
          
          printf("Neighbour list update \n");
-         
          range_sq = pow(range,2);
          
          //Fincham_Ralston loop for list updates
-         
          l=0;
          for(i=0;i<N;i++){
             for(j=i+1;j<N;j++){
@@ -110,7 +108,6 @@ namespace molecular_dynamics{
       
       return;
       }
-      
    }
 
 } // end of molecular_dynamics namespace

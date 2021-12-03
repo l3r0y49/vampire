@@ -73,7 +73,6 @@ namespace molecular_dynamics{
                
 //                populate_1d_with_column_doubles(temp_1d_pos_i,positions,i);
 //                populate_1d_with_column_doubles(temp_1d_pos_j,positions,j);
-               
                //distance between i and j
 //                sij = temp_1d_pos_i - temp_1d_pos_j;
                sij = positions[i] - positions[j];

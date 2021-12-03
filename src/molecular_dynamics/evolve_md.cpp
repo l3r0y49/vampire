@@ -26,7 +26,7 @@ namespace molecular_dynamics{
          //----------------------------------------------------------------------------
          // Function to assess the two largest displacements of the system, if their sum is larger than skin returns true
          //----------------------------------------------------------------------------
-            bool moved_too_much(skin){
+         bool moved_too_much(skin){
             double skin;
             double displ;
             double displ1=0.0;
@@ -36,7 +36,6 @@ namespace molecular_dynamics{
       
             for(i=0;i<N;i++){
                //set size to 0 and then to required to 
-               
                ///temp_dispalcement_list.resize(0);
                ///temp_dispalcement_list.resize(3);
                //temp_dispalcement_list.resize(dispalcement_list[0].size());
@@ -44,7 +43,6 @@ namespace molecular_dynamics{
                ///populate_1d_with_column_int(temp_dispalcement_list,dispalcement_list,i);
                
 //                displ=std::sqrt(std::inner_product(temp_dispalcement_list.begin(), temp_dispalcement_list.end(), temp_dispalcement_list.begin(),0));
-               
                displ=std::sqrt(std::inner_product(dispalcement_list[i].begin(), dispalcement_list[i].end(), dispalcement_list[i].begin(),0));
                
                if(displ>=displ1){
