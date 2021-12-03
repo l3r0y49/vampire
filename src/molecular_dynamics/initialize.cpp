@@ -11,7 +11,7 @@
 //
 
 // C++ standard library headers
-
+#include <cmath>
 // Vampire headers
 #include "molecular_dynamics.hpp"
 
@@ -31,7 +31,59 @@ namespace moleculardynamics{
    }
    
    void initalize_values(){
+      std::vector<double>pos_at_real(dimensions), mass_center(dimensions);
+      double scale,x_sum,y_sum,z_sum;
+      int i;
       
+      if(N <=0 ){
+         printf("FATAL ERROR: N is %i \n",N);
+      }
+      
+      //compute volume and density, do not change in run
+      volume = box_size[0]*box_size[1]*box_size[2];
+      density = N/volume;
+      
+      //if user changes density, do it here
+      if(change_rho){
+         scale = pow((density/rho_requested),(1.0/dimensions));
+         box_size = scale*box_size;
+         density = N / volume;
+      }
+      
+      //can now allocate arrays with atomic info
+      dispalcement.resize(dimensions,std::vector<double>(N));
+      positions.resize(dimensions,std::vector<double>(N));
+      velocities.resize(dimensions,std::vector<double>(N));
+      accelerations.resize(dimensions,std::vector<double>(N));
+      energy_potental.resize(N);
+      energy_kinetic.resize(N);
+      
+      //and neighbor list
+      max_list_length = max_pairs_per_atom*N;
+      list.resize(max_list_length);
+      advance.resize(N);
+      marker_1.resize(N);
+      marker_2.resize(N);
+      dispalcement_list.resize(dimensions,std::vector<double>(N));
+      
+      //positions written to array in gen_coords file
+      //don't need to manage velocities and accelerations as they are all now kept internal
+      
+      //compute center of mass coordianates - porobably a more afficent way to do all this
+      for(i=0;i<N;i++){
+         mass_center[0]=positions[i][0];
+         mass_center[1]=positions[i][1];
+         mass_center[2]=positions[i][2];
+      }
+      mass_center[0]/=N;
+      mass_center[1]/=N;
+      mass_center[2]/=N;
+      //translate atoms to center of mass is at origin
+      for(i=0;i<N;i++){
+         positions[i][0]-=mass_center[0];
+         positions[i][1]-=mass_center[1];
+         positions[i][2]-=mass_center[2];
+      }
    }
    
    void read_input(){

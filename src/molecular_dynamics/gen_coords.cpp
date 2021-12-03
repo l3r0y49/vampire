@@ -53,8 +53,13 @@ namespace molecular_dynamics{
                      y = atomic_lattice*(j + rcell(2,L)) + 2.0*dispalc(rands[2]-0.5)
                      z = atomic_lattice*(k + rcell(3,L)) + 2.0*dispalc(rands[3]-0.5)
             
-                     //write direct to displacemnet array
-                     displacement[N_count] = {x,y,z};
+                     //write direct to positions array
+                     positions[N_count] = {x/box_size,y/box_size,z/box_size};
+                     //reset elements to 0 in other atomistic arrays
+                     energy_potental[N_count]=0.0;
+                     energy_kinetic[N_count]=0.0;
+                     velocities[N_count]={0.0,0.0,0.0};
+                     accelerations[N_count]={0.0,0.0,0.0};
                      N_count++;
                   }
                }

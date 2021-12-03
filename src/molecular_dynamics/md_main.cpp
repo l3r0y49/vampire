@@ -29,7 +29,7 @@ namespace molecular_dynamics{
          //set up data structures
          initalize_values();
          //generate coords
-         generate_crystal(atomic_lattice,nx,ny,nz,dispalc);
+         generate_crystal();
          //derive potentals
          define_potental_tables();
          //inital printout
