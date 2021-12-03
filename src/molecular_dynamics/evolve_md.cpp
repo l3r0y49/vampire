@@ -125,6 +125,7 @@ namespace molecular_dynamics{
                pressure_sum += pressure;
             }
             
+            return;
          }
    
          //----------------------------------------------------------------------------
