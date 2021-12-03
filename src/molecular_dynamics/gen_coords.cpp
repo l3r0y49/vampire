@@ -41,9 +41,7 @@ namespace molecular_dynamics{
          box_size[3]=nx*atomic_lattice //internal box_size
          
          N_count=0; //number of atom positions written into array
-         
-         
-         
+
          for(k=0,k<nz,k++){  //OB1??
             for(j=0,j<ny,j++){ //OB1??
                for(i=0,i<nx,i++){ //OB1??
@@ -55,7 +53,8 @@ namespace molecular_dynamics{
                      z = atomic_lattice*(k + rcell(3,L)) + 2.0*dispalc(rands[3]-0.5)
             
                      //write direct to displacemnet array
-                     displacemnet[N_count] = {x,y,z};
+                     displacement[N_count] = {x,y,z};
+                     N_count++;
                   }
                }
             }
@@ -63,7 +62,7 @@ namespace molecular_dynamics{
       }
       
       //random number template function
-      /*credit - https://stackoverflow.com/questions/288739/generate-random-numbers-uniformly-over-an-entire-range*/
+      /*credit - https://stackoverflow.com/questions/288739/generate-random-numbers-uniformly-over-an-entire-range, 03/12/21*/
       template<typename T>
       T random() {
          std::random_device                  rand_dev;
