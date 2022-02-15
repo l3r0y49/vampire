@@ -152,6 +152,8 @@ include src/statistics/makefile
 include src/unitcell/makefile
 include src/vio/makefile
 include src/environment/makefile
+include src/molecular_dynamics/makefile
+
 
 # Cuda must be last for some odd reason
 include src/cuda/makefile
