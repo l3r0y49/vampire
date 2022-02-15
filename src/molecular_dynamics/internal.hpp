@@ -20,6 +20,7 @@
 //---------------------------------------------------------------------
 
 // C++ standard library headers
+#include <vector>
 
 // Vampire headers
 #include "molecular_dynamics.hpp"
@@ -38,7 +39,7 @@ namespace molecular_dynamics{
        //particle properties
        
        //select 2D or 3D simulation
-       const int dimensions;
+       const int dimensions=3; //switches between 3D & 2D
        //velocities and acclerations known? i.e starting equaliberration or production stages
        bool vel_acc;
        int N;
@@ -81,13 +82,13 @@ namespace molecular_dynamics{
        
        //Parameters and tables for the Lennard-Jones energy_potental
        
-       const double r_cuttoff;   //cuttof distance
-       const double phi_cuttoff; //potental at cuttoff
-       const int table_size;
-       const double r_min;
-       const double r_sq_min;
-       const double delta_r_sq;
-       const double inv_delat_r_sq;
+      const double r_cuttoff = 2.5;   
+      const double phi_cuttoff = 4.0/pow(r_cuttoff,12) - 4.0/pow(r_cuttoff,6); 
+      const int table_size = 2001;
+      const double r_min = 0.5;
+      const double r_sq_min = pow(r_min,2);
+      const double delta_r_sq = (pow(r_cuttoff,2)-r_sq_min) /(table_size - 1);
+      const double inv_delat_r_sq = 1.0/delta_r_sq;
        
        std::vector<double> phi_tab;
        std::vector<double> d_phi_tab;   //phi(r),1/r dphi/dr
@@ -100,7 +101,8 @@ namespace molecular_dynamics{
        double pressure_sum;
        
        //Neighbour list properties
-       const int max_pairs_per_atom;
+        const int max_pairs_per_atom = 100;
+       
        std::vector<int> advance;
        std::vector<int> marker_1;
        std::vector<int> marker_2;
@@ -115,8 +117,8 @@ namespace molecular_dynamics{
        int ny;
        int nz;
        double dispalc;
-       double cut_off_LJ;
-       double cut_off_Al;
+      const double cut_off_LJ = 2.5;
+      const double cut_off_Al = 5.55805441821810;
        
       //-----------------------------------------------------------------------------
       // internal materials class for storing material parameters
