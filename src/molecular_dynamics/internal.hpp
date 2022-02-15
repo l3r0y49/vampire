@@ -41,9 +41,9 @@ namespace molecular_dynamics{
        //select 2D or 3D simulation
        const int dimensions=3; //switches between 3D & 2D
        //velocities and acclerations known? i.e starting equaliberration or production stages
-       bool vel_acc;
-       int N;
-       std::vector<double> box_size;
+       extern bool vel_acc;
+       extern int N;
+       extern std::vector<double> box_size;
        std::vector<std::vector <double> > dispalcement;
        std::vector<std::vector <double> > positions;
        std::vector<std::vector <double> > velocities;
@@ -65,9 +65,9 @@ namespace molecular_dynamics{
        N-1  [n]  [o]  [p]
         */
        
-       double volume;
-       double density;
-       double virial;   //virial term to compute pressure
+       extern double volume;
+       extern double density;
+       extern double virial;   //virial term to compute pressure
        
        //!!!!!!!!!!may require some file name delcrations to store coords at various stages of run, ie in between equil and prod runs!!!!!!!!!!
        //md simulation control properties
@@ -95,10 +95,10 @@ namespace molecular_dynamics{
        
        //Statistical quantities accumulated during run
        
-       double temperature_sum;
-       double energy_kinetic_sum;
-       double energy_potental_sum;
-       double pressure_sum;
+       extern double temperature_sum;
+       extern double energy_kinetic_sum;
+       extern double energy_potental_sum;
+       extern double pressure_sum;
        
        //Neighbour list properties
         const int max_pairs_per_atom = 100;
@@ -107,7 +107,7 @@ namespace molecular_dynamics{
        std::vector<int> marker_1;
        std::vector<int> marker_2;
        std::vector<int> list;
-       int max_list_length;
+       extern int max_list_length;
        int list_length;
        std::vector<std::vector <double> > dispalcement_list;
        

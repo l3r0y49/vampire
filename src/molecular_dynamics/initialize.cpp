@@ -19,20 +19,23 @@
 #include "internal.hpp"
 
 namespace moleculardynamics{
+   
+   namespace internal{
 
-   //----------------------------------------------------------------------------
-   // Function to initialize molecular_dynamics module
-   //----------------------------------------------------------------------------
-   void initialize(){
+      //----------------------------------------------------------------------------
+      // Function to initialize molecular_dynamics module
+      //----------------------------------------------------------------------------
+      void initialize(){
       
-      // call md driver
-      main_md();
-      return;
-   }
+         // call md driver
+         main_md();
+         return;
+      }
    
    void initalize_values(){
       std::vector<double>pos_at_real(dimensions), mass_center(dimensions);
-      double scale,x_sum,y_sum,z_sum;
+      double scale,x_sum,y_sum,z_sum
+;
       int i;
       
       if(N <=0 ){
@@ -77,7 +80,7 @@ namespace moleculardynamics{
       }
       mass_center[0]/=N;
       mass_center[1]/=N;
-      mass_center[2]/=N;
+      mass_center[2]/=N;delta_t
       //translate atoms to center of mass is at origin
       for(i=0;i<N;i++){
          positions[i][0]-=mass_center[0];
@@ -122,7 +125,8 @@ namespace moleculardynamics{
    
    void inital_printout(){
       
-      printf("# Number of steps: %i time step: %f total time %f \n",Nsteps,deltat,double(Nsteps)*deltat);
+      printf("# Number of steps: %i time step: %f total time %f \n",N_prod_steps,delta_t,double(N_prod_steps)*delta_t
+);
       printf("# Number of atoms: %i \n",N);
       printf("# Box size: %f %f %f volume: %f \n",box_size[0],box_size[1],box_size[1],volume);
       if(change_rho){
@@ -135,11 +139,13 @@ namespace moleculardynamics{
       }else{
          printf("# Free evolution run\n");
       }
-      printf("# skin: %f maximum neighbor list length: %i \n",skin,max_list_length);
+      printf("# skin: %f maximum neighbor list length: %i \n",skin,max_list_length
+);
       
       printf("#\n");
       printf("# Step   Temperature     Kinetic      Potential   Total Energy    Pressure\n");
       printf("# -----  ------------  ------------  ------------  ------------  ------------\n");
+   }
    }
 
 } // end of molecular_dynamics namespace

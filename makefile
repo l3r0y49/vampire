@@ -136,11 +136,13 @@ include src/create/makefile
 include src/config/makefile
 include src/constants/makefile
 include src/dipole/makefile
+include src/environment/makefile
 include src/exchange/makefile
 include src/gpu/makefile
 include src/hierarchical/makefile
 include src/ltmp/makefile
 include src/main/makefile
+include src/molecular_dynamics/makefile
 include src/montecarlo/makefile
 include src/micromagnetic/makefile
 include src/mpi/makefile
@@ -151,8 +153,8 @@ include src/spintransport/makefile
 include src/statistics/makefile
 include src/unitcell/makefile
 include src/vio/makefile
-include src/environment/makefile
-include src/molecular_dynamics/makefile
+
+
 
 
 # Cuda must be last for some odd reason

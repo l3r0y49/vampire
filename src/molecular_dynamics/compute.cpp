@@ -13,7 +13,7 @@
 // C++ standard library headers
 #include <cmath>
 #include <vector>
-#include <numeric>
+#include <numeric>   // std::inner_product
 // Vampire headers
 #include "molecular_dynamics.hpp"
 
@@ -40,7 +40,7 @@ namespace molecular_dynamics{
             
             phi_tab(i+1) = 4.0*(rm_12-rm_6)-phi_cuttoff;  //4(1/r^12 - 1/r^6)-phi(Rc)
             
-            //dphi = -(1/r)(dv/dr)
+            //d_phi = -(1/r)(dv/dr)
             d_phi_tab(i+1) = 24.0*rm_2*(2.0*rm_12-rm_6);  //24(1/r^14 - 1/r^8)
          }
          return;
@@ -91,7 +91,7 @@ namespace molecular_dynamics{
                rij=box_size*sij;  //real space units
                r_sqij=std::inner_product(rij,rij);  //square distance
                
-               if(r_sqij < pow(rcutoff,2)){   //are particles interacting?
+               if(r_sqij < pow(r_cuttoff,2)){   //are particles interacting?
                   rk = (r_sqij - r_sq_min)* inv_delat_r_sq +1.0; // "continuous index in tables"
                   k= int(rk);    //descrete index
                   if(k<1){

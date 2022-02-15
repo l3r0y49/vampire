@@ -34,19 +34,17 @@ namespace molecular_dynamics{
 
       std::vector<internal::mp_t> mp; // array of material properties
       
-      vel_acc=false;
-      N=0;
+      bool vel_acc=false;
+      int N=0;
       
       //resize box_size now that dimensions has a value
-      box_size.resize(dimensions);
+      std::vector<double> box_size(dimensions);
       
-      temperature_sum = 0.0;
-      energy_kinetic_sum = 0.0;
-      energy_potental_sum = 0.0;
-      pressure_sum = 0.0;
-      
+      double temperature_sum = 0.0;
+      double energy_kinetic_sum = 0.0;
+      double energy_potental_sum = 0.0;
+      double pressure_sum = 0.0;
 
-      
    } // end of internal namespace
 
 } // end of molecular_dynamics namespace
