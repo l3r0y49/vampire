@@ -13,6 +13,7 @@
 // C++ standard library headers
 #include <cmath>
 #include <vector>
+#include <numeric>
 // Vampire headers
 #include "molecular_dynamics.hpp"
 
@@ -34,13 +35,13 @@ namespace molecular_dynamics{
             
             r_sq = r_sq_min + i * delta_r_sq;
             rm_2 = 1.0/r_sq;     //1/r^2
-            rm_6 = pow(rm_2,3)   //1/r^6
-            rm_12 = pow(rm_6,3)  //1/r^12
+            rm_6 = pow(rm_2,3);   //1/r^6
+            rm_12 = pow(rm_6,3);  //1/r^12
             
-            phi_tab(i+1) = 4.0*(rm_12-rm_6)-phi_cuttoff  //4(1/r^12 - 1/r^6)-phi(Rc)
+            phi_tab(i+1) = 4.0*(rm_12-rm_6)-phi_cuttoff;  //4(1/r^12 - 1/r^6)-phi(Rc)
             
             //dphi = -(1/r)(dv/dr)
-            d_phi_tab(i+1) = 24.0*rm_2*(2.0*rm_12-rm_6)  //24(1/r^14 - 1/r^8)
+            d_phi_tab(i+1) = 24.0*rm_2*(2.0*rm_12-rm_6);  //24(1/r^14 - 1/r^8)
          }
          return;
       }
@@ -98,20 +99,20 @@ namespace molecular_dynamics{
                   }
                   weight = rk - double(k);            //fractional part [0,1]
                   phi = weight* phi_tab(k+1) + (1.0-weight)* phi_tab(k); //linear interpolation
-                  dphi = weight* d_phi_tab(k+1) + (1.0-weight)* d_phi_tab(k);
+                  d_phi = weight* d_phi_tab(k+1) + (1.0-weight)* d_phi_tab(k);
                   energy_potental(i) += 0.5*phi;     //accumulate energy
                   energy_potental(j) += 0.5*phi;     //shared bewteen i&j
-                  virial -= dphi*r_sqij;             //accum. virial sum r(dv/dr)
+                  virial -= d_phi*r_sqij;             //accum. virial sum r(dv/dr)
                   acc[i] += d_phi*sij;                //accum. forces (Fij = -Fji)
                   acc[j] -= d_phi*sij; 
                }
             }
          }
-      viral = -viral/dimensions;                    //virial term
+      virial = -virial/dimensions;                    //virial term
       }
       
       void compute_temperature(double energy_kin_aver,double temperature){
-         std::vector<double> real_val;
+         std::vector<double> real_vel;
          int i;
          
          for(i=0;i<N;i++){ //ob1 error?

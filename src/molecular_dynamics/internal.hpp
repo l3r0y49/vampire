@@ -174,7 +174,8 @@ namespace molecular_dynamics{
       //generate_coords
       //double atomic_lattice,int nx,int ny,int nz,double dispalc
       void generate_crystal();
-      T random();
+      template<typename T> T random();
+      
       
       //terminate
       void terminate();
