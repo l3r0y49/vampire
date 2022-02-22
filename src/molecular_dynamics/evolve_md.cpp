@@ -14,6 +14,7 @@
 #include <cmath>
 #include <numeric>
 #include <vector>
+
 // Vampire headers
 #include "molecular_dynamics.hpp"
 
@@ -143,5 +144,5 @@ namespace molecular_dynamics{
 //          }
 //       }
    
-} // end of molecular_dynamics namespace
-
+   } // end of molecular_dynamics namespace
+}

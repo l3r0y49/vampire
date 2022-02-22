@@ -117,8 +117,23 @@ namespace molecular_dynamics{
        int ny;
        int nz;
        double dispalc;
-      const double cut_off_LJ = 2.5;
-      const double cut_off_Al = 5.55805441821810;
+       const double cut_off_LJ = 2.5;
+       const double cut_off_Al = 5.55805441821810;
+      
+       class rng{
+         
+         std::mt19937 mt;  //mersenne twister
+         std::uniform_real_distribution<double> dist;
+         
+       public:
+         
+         //seed rng
+         
+         void seed(unsigned int random_seed);
+         
+         //wrapper function
+         double grnd();
+      };
        
       //-----------------------------------------------------------------------------
       // internal materials class for storing material parameters
@@ -162,6 +177,7 @@ namespace molecular_dynamics{
       //compute
       void define_potental_tables();
       void compute_forces();
+      void compute_temperature(double energy_kin_aver,double temperature);
       
       //evolve
       bool moved_too_much(skin);
@@ -174,7 +190,7 @@ namespace molecular_dynamics{
       //generate_coords
       //double atomic_lattice,int nx,int ny,int nz,double dispalc
       void generate_crystal();
-      template<typename T> T random();
+//       template<typename T> T random();
       
       
       //terminate
