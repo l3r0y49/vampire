@@ -18,6 +18,7 @@
 
 // moleculardynamics module headers
 #include "internal.hpp"
+namespace mdi=molecular_dynamics::internal;
 
 namespace moleculardynamics{
    
@@ -65,7 +66,7 @@ namespace moleculardynamics{
       //and neighbor list
       max_list_length = max_pairs_per_atom*N;
       list.resize(max_list_length);
-      advance.resize(N);
+      mdi::advance.resize(N);
       marker_1.resize(N);
       marker_2.resize(N);
       dispalcement_list.resize(dimensions,std::vector<double>(N));

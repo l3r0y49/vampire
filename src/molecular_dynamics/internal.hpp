@@ -23,6 +23,7 @@
 #include <vector>
 #include <numeric>
 #include <math.h> 
+#include <random>
 // Vampire headers
 #include "molecular_dynamics.hpp"
 
