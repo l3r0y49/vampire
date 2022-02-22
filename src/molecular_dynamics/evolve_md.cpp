@@ -28,7 +28,7 @@ namespace molecular_dynamics{
          //----------------------------------------------------------------------------
          // Function to assess the two largest displacements of the system, if their sum is larger than skin returns true
          //----------------------------------------------------------------------------
-         bool moved_too_much(skin){
+         moved_too_much(skin){
             double skin;
             double displ;
             double displ1=0.0;
@@ -76,18 +76,22 @@ namespace molecular_dynamics{
             compute_temperature(ene_kin_aver,temperature);
             
             //"Velocity Verlet" Integrator (see e.g. Allen and Tildesley book, p. 81)
-            // velocity scaling applied when constant_t is enabled
+            // velocity scaling applied when t_constat is enabled
             
             for(step=1;step<=N_steps;step++){
                
                refold_positions();
                //genarate square of displacements
+               
+               //errors==================================================
                std::transform(dispalcement.begin(),dispalcement.end(),dispalcement_sqr,multiplies<double>());
                dispalcement =dispalcement*velocities + 0.5*(dispalcement)*accelerations;   //dr = r(t+dt) -r (t)
                
                positions += dispalcement;  // r(t+dt)
                
-               if(constant_t && (temperature>0)){  //velocity rescale for constant temp.
+               //=============================================================
+               
+               if(t_constat && (temperature>0)){  //velocity rescale for constant temp.
                   compute_temperature(ene_kin_aver,temperature);
                   chi = sqrt(t_requested/temperature);
                   velocities = chi*velocities + 0.5*dispalcement*accelerations; //v(t+dt/2) (scaled)
@@ -99,14 +103,14 @@ namespace molecular_dynamics{
                   list_update_requested=false;  //updated
                }
                compute_forces();                                           //a(t+dt)
-               velocities=velocities + 0.5*displacement*accelerations;    //v(t+dt)
+               velocities=velocities + 0.5*dispalcement*accelerations;    //v(t+dt)
                compute_temperature(ene_kin_aver,temperature);              // at t+dt, energy_kinetic
-               energy_kin_aver = std::accumulate(energy_potental.begin(), energy_potental.end(),0)/N;
+               ene_kin_aver = std::accumulate(energy_potental.begin(), energy_potental.end(),0)/N;
                ene_tot_aver = ene_kin_aver + ene_pot_aver;
                
                //pressure calculation, see the Allen and Tildesley book, section 2.4
                
-               pressure = density*temperature + viral/volume;
+               pressure = density*temperature + virial/volume;
                
                //update displacement list
                for(i=0;i<N;i++){

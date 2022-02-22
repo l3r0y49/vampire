@@ -62,9 +62,9 @@ namespace molecular_dynamics{
          
          //define no. of particles and box size 
          N=4*nx*ny*nz;                  //internal N
-         box_size[1]=nx*atomic_lattice; //internal box_size
-         box_size[2]=ny*atomic_lattice; //internal box_size
-         box_size[3]=nx*atomic_lattice; //internal box_size
+         box_size[0]=nx*atomic_lattice; //internal box_size
+         box_size[1]=ny*atomic_lattice; //internal box_size
+         box_size[2]=nx*atomic_lattice; //internal box_size
          
          N_count=0; //number of atom positions written into array
 
@@ -73,17 +73,20 @@ namespace molecular_dynamics{
                for(i=0;i<nx;i++){ //OB1??
                   for(l=0;l<nbase;l++){ //OB1??
                      
-                     random_generators[1].seed(l*i);
-                     random_generators[2].seed(l*j);
-                     random_generators[3].seed(l*k);
+                     //seed each rng
+                     random_generators[0].seed(l*i);
+                     random_generators[1].seed(l*j);
+                     random_generators[2].seed(l*k);
                      
-                     rands = {random_generators[1].grnd(),random_generators[2].grnd(),random_generators[3].grnd()};
-                     x = atomic_lattice*(i + rcell(1,L)) + 2.0*dispalc(rands[1]-0.5);
-                     y = atomic_lattice*(j + rcell(2,L)) + 2.0*dispalc(rands[2]-0.5);
-                     z = atomic_lattice*(k + rcell(3,L)) + 2.0*dispalc(rands[3]-0.5);
+                     //generate array with 3 rn
+                     rands = {random_generators[0].grnd(),random_generators[1].grnd(),random_generators[2].grnd()};
+                     
+                     x = atomic_lattice*(i + rcell[1,L]) + 2.0*dispalc[rands[0]-0.5];
+                     y = atomic_lattice*(j + rcell[2,L]) + 2.0*dispalc[rands[1]-0.5];
+                     z = atomic_lattice*(k + rcell[3,L]) + 2.0*dispalc[rands[2]-0.5];
             
                      //write direct to positions array
-                     positions[N_count] = {x/box_size[1],y/box_size[2],z/box_size[3]};
+                     positions[N_count] = {x/box_size[0],y/box_size[2],z/box_size[2]};
                      //reset elements to 0 in other atomistic arrays
                      energy_potental[N_count]=0.0;
                      energy_kinetic[N_count]=0.0;

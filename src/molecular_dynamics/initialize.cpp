@@ -12,6 +12,7 @@
 
 // C++ standard library headers
 #include <cmath>
+#include <cstdio>
 // Vampire headers
 #include "molecular_dynamics.hpp"
 
@@ -80,7 +81,7 @@ namespace moleculardynamics{
       }
       mass_center[0]/=N;
       mass_center[1]/=N;
-      mass_center[2]/=N;delta_t
+      mass_center[2]/=N;
       //translate atoms to center of mass is at origin
       for(i=0;i<N;i++){
          positions[i][0]-=mass_center[0];

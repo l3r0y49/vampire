@@ -35,11 +35,11 @@ namespace molecular_dynamics{
             for(j=0;j<positions.size();j++){
                //refold if out of box
                if(positions[j][i]>0.5){
-                  positions[j][i]-=1.0
+                  positions[j][i]-=1.0;
                }
                //refold if out of box
                if(positions[j][i]<-0.5){
-                  positions[j][i]+=1.0
+                  positions[j][i]+=1.0;
                }
             }
          }
@@ -58,7 +58,7 @@ namespace molecular_dynamics{
       void update_list(double range){
          double range_sq;
          std::vector<double> sij(dimensions),rij(dimensions);
-         double r_sqij
+         double r_sqij;
          int i,j,l,m;
          
          printf("Neighbour list update \n");
@@ -71,15 +71,15 @@ namespace molecular_dynamics{
              sij = positions[i] - positions[j];
              
              //apply boundary conditions where needed
-               for(m=0;m<sij;m++){
-                  if(sij(m)>0.5){
-                     sij(m)-=1.0 ;
-                  }else if(sij(m)<0.5){
-                        sij(m)+=1.0;
+               for(m=0;m<sij.size();m++){
+                  if(sij[m]>0.5){
+                     sij[m]-=1.0 ;
+                  }else if(sij[m]<0.5){
+                        sij[m]+=1.0;
                   }
                }
-               rij=box_size*sij;  //real space units
-               r_sqij=std::inner_product(rij,rij);  //square distance
+               rij=box_size[1]*sij;  //real space units
+               r_sqij=std::inner_product(rij.begin(),rij.end(),rij.begin(),0);  //square distance
                
                if(r_sqij<range_sq){ //is j an neighbour of i?
                   advance[j]=1.0;    //yes
@@ -94,7 +94,7 @@ namespace molecular_dynamics{
                   printf("%i value of parameter max_pairs_per_atom needs increasing\n",max_pairs_per_atom);
                   std::exit;
                }
-               list(l)=j;     //j included
+               list[l]=j;     //j included
                l+=advance[j]; //only if advance(j) is 1 
             }
             marker_2[i]=l-1;  //end of list for l

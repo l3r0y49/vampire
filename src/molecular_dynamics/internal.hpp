@@ -21,7 +21,8 @@
 
 // C++ standard library headers
 #include <vector>
-
+#include <numeric>
+#include <math.h> 
 // Vampire headers
 #include "molecular_dynamics.hpp"
 
