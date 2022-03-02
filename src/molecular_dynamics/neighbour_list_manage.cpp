@@ -18,6 +18,7 @@
 
 // molecular_dynamics module headers
 #include "internal.hpp"
+namespace mdi=molecular_dynamics::internal;
 
 namespace molecular_dynamics{
    
@@ -31,15 +32,15 @@ namespace molecular_dynamics{
          int i;
          int j;
       
-         for(i=0;i<positions.size();i++){
-            for(j=0;j<positions.size();j++){
+         for(i=0;i<mdi::positions.size();i++){
+            for(j=0;j<mdi::positions.size();j++){
                //refold if out of box
-               if(positions[j][i]>0.5){
-                  positions[j][i]-=1.0;
+               if(mdi::positions[j][i]>0.5){
+                  mdi::positions[j][i]-=1.0;
                }
                //refold if out of box
-               if(positions[j][i]<-0.5){
-                  positions[j][i]+=1.0;
+               if(mdi::positions[j][i]<-0.5){
+                  mdi::positions[j][i]+=1.0;
                }
             }
          }
@@ -68,7 +69,7 @@ namespace molecular_dynamics{
          l=0;
          for(i=0;i<N;i++){
             for(j=i+1;j<N;j++){
-             sij = positions[i] - positions[j];
+             sij = mdi::positions[i] - mdi::positions[j];
              
              //apply boundary conditions where needed
                for(m=0;m<sij.size();m++){
@@ -78,33 +79,33 @@ namespace molecular_dynamics{
                         sij[m]+=1.0;
                   }
                }
-               rij=box_size[1]*sij;  //real space units
+               rij=mdi::box_size[0]*sij;  //real space units
                r_sqij=std::inner_product(rij.begin(),rij.end(),rij.begin(),0);  //square distance
                
                if(r_sqij<range_sq){ //is j an neighbour of i?
-                  advance[j]=1.0;    //yes
+                  box_size[0]advance[j]=1.0;    //yes
                }else{
-                  advance[j]=0.0;     //no
+                  box_size[0]advance[j]=0.0;     //no
                }
             }
-            marker_1[i]=l;          //start list for i
-            for(j=i+1;j<N;j++){
-               if(l>max_list_length){
+            mdi::marker_1[i]=l;          //start list for i
+            for(j=i+1;j<mdi::N;j++){
+               if(l>mdi::max_list_length){
                   printf("update_list: FATAL: list too small for skin \n");
                   printf("%i value of parameter max_pairs_per_atom needs increasing\n",max_pairs_per_atom);
                   std::exit;
                }
-               list[l]=j;     //j included
-               l+=advance[j]; //only if advance(j) is 1 
+               mdi::list[l]=j;     //j included
+               l+=mdi::advance[j]; //only if advance(j) is 1 
             }
-            marker_2[i]=l-1;  //end of list for l
+            mdi::marker_2[i]=l-1;  //end of list for l
          }
-      list_length= l-1;    //final lenght of list
+      mdi::list_length= l-1;    //final lenght of list
                
-      printf("%i index in list \n",list_length);
+      printf("%i index in list \n",mdi::list_length);
       
-      dispalcement_list.resize(0,std::vector<double>(0));
-      dispalcement_list.resize(dimensions,std::vector<double>(N));
+      mdi::dispalcement_list.resize(0,std::vector<double>(0));
+      mdi::dispalcement_list.resize(dimensions,std::vector<double>(N));
       
       return;
       }

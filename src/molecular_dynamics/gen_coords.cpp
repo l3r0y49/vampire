@@ -19,6 +19,7 @@
 
 // molecular_dynamics module headers
 #include "internal.hpp"
+namespace mdi=molecular_dynamics::internal;
 
 namespace molecular_dynamics{
 
@@ -47,10 +48,10 @@ namespace molecular_dynamics{
       };
          
       void generate_crystal(){
-         //double atomic_lattice,int nx,int ny,int nz,double dispalc
+         //double atomic_lattice,int nx,int ny,int nz,double dispalc - use mdi:: namespace variables
          const int crtout = 6;
-         std::vector<double>rands(3);
-         int i,j,k,l,n_count;
+//          std::vector<double>rands(3);
+         int i,j,k,l,N_count;
          double x,y,z;
          const int nbase = 4; //atoms in fcc cell
          std::vector<std::vector<double> > rcell = {{0.0,0.0,0.0}, //coords of atom
@@ -62,16 +63,16 @@ namespace molecular_dynamics{
          std::vector<rng> random_generators(3);
          
          //define no. of particles and box size 
-         N=4*nx*ny*nz;                  //internal N
-         box_size[0]=nx*atomic_lattice; //internal box_size
-         box_size[1]=ny*atomic_lattice; //internal box_size
-         box_size[2]=nx*atomic_lattice; //internal box_size
+         mdi::N=4*mdi::nx*mdi::ny*mdi::nz;                  //internal N
+         mdi::box_size[0]=mdi::nx*mdi::atomic_lattice; //internal box_size
+         mdi::box_size[1]=mdi::ny*mdi::atomic_lattice; //internal box_size
+         mdi::box_size[2]=mdi::nx*mdi::atomic_lattice; //internal box_size
          
          N_count=0; //number of atom positions written into array
 
-         for(k=0;k<nz;k++){  //OB1??
-            for(j=0;j<ny;j++){ //OB1??
-               for(i=0;i<nx;i++){ //OB1??
+         for(k=0;k<mdi::nz;k++){  //OB1??
+            for(j=0;j<mdi::ny;j++){ //OB1??
+               for(i=0;i<mdi::nx;i++){ //OB1??
                   for(l=0;l<nbase;l++){ //OB1??
                      
                      //seed each rng
@@ -80,20 +81,20 @@ namespace molecular_dynamics{
                      random_generators[2].seed(l*k);
                      
                      //generate array with 3 rn
-                     rands = {random_generators[0].grnd(),random_generators[1].grnd(),random_generators[2].grnd()};
+//                      rands = {random_generators[0].grnd(),random_generators[1].grnd(),random_generators[2].grnd()};
                      
-                     x = atomic_lattice*(i + rcell[1,L]) + 2.0*dispalc[rands[0]-0.5];
-                     y = atomic_lattice*(j + rcell[2,L]) + 2.0*dispalc[rands[1]-0.5];
-                     z = atomic_lattice*(k + rcell[3,L]) + 2.0*dispalc[rands[2]-0.5];
+                     x = mdi::atomic_lattice*(i + rcell[1,L]) + 2.0*mdi::dispalc[random_generators[0].grnd()-0.5];
+                     y = mdi::atomic_lattice*(j + rcell[2,L]) + 2.0*mdi::dispalc[random_generators[1].grnd()-0.5];
+                     z = mdi::atomic_lattice*(k + rcell[3,L]) + 2.0*mdi::dispalc[random_generators[2].grnd()-0.5];
             
                      //write direct to positions array
-                     positions[N_count] = {x/box_size[0],y/box_size[2],z/box_size[2]};
+                     mdi::positions[N_count] = {x/mdi::box_size[0],y/mdi::box_size[2],z/mdi::box_size[2]};
                      //reset elements to 0 in other atomistic arrays
-                     energy_potental[N_count]=0.0;
-                     energy_kinetic[N_count]=0.0;
-                     velocities[N_count]={0.0,0.0,0.0};
-                     accelerations[N_count]={0.0,0.0,0.0};
-                     N_count++;
+                     mdi::energy_potental[N_count]=0.0;
+                     mdi::energy_kinetic[N_count]=0.0;
+                     mdi::velocities[N_count]={0.0,0.0,0.0};
+                     mdi::accelerations[N_count]={0.0,0.0,0.0};
+                     mdi::N_count++;
                   }
                }
             }

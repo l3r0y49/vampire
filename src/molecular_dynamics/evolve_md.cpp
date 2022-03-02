@@ -20,6 +20,7 @@
 
 // molecular_dynamics module headers
 #include "internal.hpp"
+namespace mdi=molecular_dynamics::internal;
 
 namespace molecular_dynamics{
    
@@ -36,7 +37,7 @@ namespace molecular_dynamics{
             ///std::vector <double> temp_dispalcement_list(3);
             int i;
       
-            for(i=0;i<N;i++){
+            for(i=0;i<mdi::N;i++){
                //set size to 0 and then to required to 
                ///temp_dispalcement_list.resize(0);
                ///temp_dispalcement_list.resize(3);
@@ -56,7 +57,7 @@ namespace molecular_dynamics{
                }
             }
             
-            if(displ1+displ2>skin){
+            if(displ1+displ2>mdi::skin){
                return true;
             }else{
                return false;
@@ -83,38 +84,39 @@ namespace molecular_dynamics{
                refold_positions();
                //genarate square of displacements
                
-               //errors==================================================
-               std::transform(dispalcement.begin(),dispalcement.end(),dispalcement_sqr,multiplies<double>());
-               dispalcement =dispalcement*velocities + 0.5*(dispalcement)*accelerations;   //dr = r(t+dt) -r (t)
+               //errors================================================== need for loop
+               std::transform(mdi::dispalcement.begin(),mdi::dispalcement.end(),dispalcement_sqr,multiplies<double>());
+               mdi::dispalcement =mdi::dispalcement*mdi::velocities + 0.5*(mdi::dispalcement)*mdi::accelerations;   //dr = r(t+dt) -r (t)
                
-               positions += dispalcement;  // r(t+dt)
+               mdi::positions += mdi::dispalcement;  // r(t+dt)
                
-               //=============================================================
+               //============================================================= - for loop required
                
-               if(t_constat && (temperature>0)){  //velocity rescale for constant temp.
+               if(mdi::t_constat && (temperature>0)){  //velocity rescale for constant temp.
                   compute_temperature(ene_kin_aver,temperature);
-                  chi = sqrt(t_requested/temperature);
-                  velocities = chi*velocities + 0.5*dispalcement*accelerations; //v(t+dt/2) (scaled)
+                  chi = sqrt(mdi::t_requested/temperature);
+                  mdi::velocities = chi*mdi::velocities + 0.5*mdi::dispalcement*mdi::accelerations; //v(t+dt/2) (scaled)
                } else {
-                  velocities = velocities + 0.5*dispalcement*accelerations; //v(t+dt/2)
+                  mdi::velocities = mdi::velocities + 0.5*mdi::dispalcement*mdi::accelerations; //v(t+dt/2)
                }
                if(list_update_requested){       //update required
-                  update_list(r_cuttoff+skin);  //do update
+                  update_list(mdi::r_cuttoff+mdi::skin);  //do update
                   list_update_requested=false;  //updated
                }
-               compute_forces();                                           //a(t+dt)
-               velocities=velocities + 0.5*dispalcement*accelerations;    //v(t+dt)
+               compute_forces(); //a(t+dt)
+               //=================for loop required ============
+               mdi::velocities=mdi::velocities + 0.5*mdi::dispalcement*mdi::accelerations;    //v(t+dt)
                compute_temperature(ene_kin_aver,temperature);              // at t+dt, energy_kinetic
-               ene_kin_aver = std::accumulate(energy_potental.begin(), energy_potental.end(),0)/N;
+               ene_kin_aver = std::accumulate(mdi::energy_potental.begin(), mdi::energy_potental.end(),0)/mdi::N;
                ene_tot_aver = ene_kin_aver + ene_pot_aver;
                
                //pressure calculation, see the Allen and Tildesley book, section 2.4
                
-               pressure = density*temperature + virial/volume;
+               pressure = mdi::density*temperature + mdi::virial/mdi::volume;
                
                //update displacement list
-               for(i=0;i<N;i++){
-                  dispalcement_list[i] = dispalcement_list[j] + box_size*displacement[j];
+               for(i=0;i<mdi::N;i++){
+                  mdi::dispalcement_list[i] = mdi::dispalcement_list[j] + mdi::box_size*mdi::displacement[j];
                }
                //deterioration test, if moved too much relative to skin
                //list update scheduled for next step
@@ -123,10 +125,10 @@ namespace molecular_dynamics{
                printf("%i %f %f %f %f \n",step,temperature,ene_kin_aver,ene_pot_aver,pressure); //**make wtite out to file once I/O routines are set up**
                
                //accumlate stats
-               temperature_sum += temperature;
-               energy_kinetic_sum += ene_kin_aver;
-               energy_potental_sum += ene_pot_aver;
-               pressure_sum += pressure;
+               mdi::temperature_sum += temperature;
+               mdi::energy_kinetic_sum += ene_kin_aver;
+               mdi::energy_potental_sum += ene_pot_aver;
+               mdi::pressure_sum += pressure;
             }
             
             return;

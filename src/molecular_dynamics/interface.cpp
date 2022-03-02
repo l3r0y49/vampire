@@ -20,6 +20,7 @@
 
 // molecular_dynamics module headers
 #include "internal.hpp"
+namespace mdi=molecular_dynamics::internal;
 
 namespace molecular_dynamics{
 

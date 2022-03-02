@@ -36,58 +36,57 @@ namespace moleculardynamics{
    
    void initalize_values(){
       std::vector<double>pos_at_real(dimensions), mass_center(dimensions);
-      double scale,x_sum,y_sum,z_sum
-;
+      double scale,x_sum,y_sum,z_sum;
       int i;
       
-      if(N <=0 ){
-         printf("FATAL ERROR: N is %i \n",N);
+      if(mdi::N <=0 ){
+         printf("FATAL ERROR: N is %i \n",mdi::N);
       }
       
       //compute volume and density, do not change in run
-      volume = box_size[0]*box_size[1]*box_size[2];
-      density = N/volume;
+      mdi::volume = mdi::box_size[0]*mdi::box_size[1]*mdi::box_size[2];
+      mdi::density = mdi::N/mdi::volume;
       
       //if user changes density, do it here
-      if(change_rho){
-         scale = pow((density/rho_requested),(1.0/dimensions));
-         box_size = scale*box_size;
-         density = N / volume;
+      if(mdi::change_rho){
+         scale = pow((mdi::density/mdi::rho_requested),(1.0/mdi::dimensions));
+         mdi::box_size = scale*mdi::box_size;
+         mdi::density = mdi::N / mdi::volume;
       }
       
       //can now allocate arrays with atomic info
-      dispalcement.resize(dimensions,std::vector<double>(N));
-      positions.resize(dimensions,std::vector<double>(N));
-      velocities.resize(dimensions,std::vector<double>(N));
-      accelerations.resize(dimensions,std::vector<double>(N));
-      energy_potental.resize(N);
-      energy_kinetic.resize(N);
+      mdi::dispalcement.resize(dimensions,std::vector<double>(N));
+      mdi::positions.resize(dimensions,std::vector<double>(N));
+      mdi::velocities.resize(dimensions,std::vector<double>(N));
+      mdi::accelerations.resize(dimensions,std::vector<double>(N));
+      mdi::energy_potental.resize(N);
+      mdi::energy_kinetic.resize(N);
       
       //and neighbor list
-      max_list_length = max_pairs_per_atom*N;
-      list.resize(max_list_length);
+      mdi::max_list_length = max_pairs_per_atom*N;
+      mdi::list.resize(max_list_length);
       mdi::advance.resize(N);
-      marker_1.resize(N);
-      marker_2.resize(N);
-      dispalcement_list.resize(dimensions,std::vector<double>(N));
+      mdi::marker_1.resize(N);
+      mdi::marker_2.resize(N);
+      mdi::dispalcement_list.resize(dimensions,std::vector<double>(N));
       
       //positions written to array in gen_coords file
       //don't need to manage velocities and accelerations as they are all now kept internal
       
       //compute center of mass coordianates - porobably a more afficent way to do all this
-      for(i=0;i<N;i++){
-         mass_center[0]=positions[i][0];
-         mass_center[1]=positions[i][1];
-         mass_center[2]=positions[i][2];
+      for(i=0;i<mdi::N;i++){
+         mass_center[0]=mdi::positions[i][0];
+         mass_center[1]=mdi::positions[i][1];
+         mass_center[2]=mdi::positions[i][2];
       }
-      mass_center[0]/=N;
-      mass_center[1]/=N;
-      mass_center[2]/=N;
+      mass_center[0]/=double(mdi::N);
+      mass_center[1]/=double(mdi::N);
+      mass_center[2]/=double(mdi::N);
       //translate atoms to center of mass is at origin
-      for(i=0;i<N;i++){
-         positions[i][0]-=mass_center[0];
-         positions[i][1]-=mass_center[1];
-         positions[i][2]-=mass_center[2];
+      for(i=0;i<mdi::N;i++){
+         mdi::positions[i][0]-=mass_center[0];
+         mdi::positions[i][1]-=mass_center[1];
+         mdi::positions[i][2]-=mass_center[2];
       }
    }
    
@@ -98,50 +97,54 @@ namespace moleculardynamics{
       **implement reminder in file I/0**
       cut_off_LJ = 2.5;
        */
-      atomic_lattice=1.5496;
-      nx=4;
-      ny=4;
-      nz=4;
-      dispalc=0.1;
+      mdi::atomic_lattice=1.5496;
+      mdi::nx=4;
+      mdi::ny=4;
+      mdi::nz=4;
+      mdi::dispalc=0.1;
+      
+      mdi::box_size[0]=nx;
+      mdi::box_size[1]=ny;
+      mdi::box_size[2]=nz;
 
       //simulation values
       //hardwired values to be read in from file once file I/O implemented
-       N_equi_steps=10000;
-       N_prod_steps=pow(2.0,13); //exponent of 13-18 known to work from MD module
-       delta_t=0.004;
-       rho_requested=0.7;
-       t_requested=1.5;
-       skin=0.1;
+       mdi::N_equi_steps=10000;
+       mdi::N_prod_steps=pow(2.0,13); //exponent of 13-18 known to work from MD module
+       mdi::delta_t=0.004;
+       mdi::rho_requested=0.7;
+       mdi::t_requested=1.5;
+       mdi::skin=0.1;
        
-       if(rho_requested>0.0){
-         change_rho = true;
+       if(mdi::rho_requested>0.0){
+         mdi::change_rho = true;
        }else{
-          change_rho = false;
+          mdi::change_rho = false;
        }
-       if(t_requested>0.0){
-         t_constat = true;
+       if(mdi::t_requested>0.0){
+         mdi::t_constat = true;
        }else{
-          t_constat = false;
+          mdi::t_constat = false;
        }
    }
    
    void inital_printout(){
       
-      printf("# Number of steps: %i time step: %f total time %f \n",N_prod_steps,delta_t,double(N_prod_steps)*delta_t
+      printf("# Number of steps: %i time step: %f total time %f \n",mdi::N_prod_steps,mdi::delta_t,double(mdi::N_prod_steps)*mdi::delta_t
 );
-      printf("# Number of atoms: %i \n",N);
-      printf("# Box size: %f %f %f volume: %f \n",box_size[0],box_size[1],box_size[1],volume);
-      if(change_rho){
-         printf("# Density: %f (changed)\n",density);
+      printf("# Number of atoms: %i \n",mdi::N);
+      printf("# Box size: %f %f %f volume: %f \n",mdi::box_size[0],mdi::box_size[1],mdi::box_size[1],mdi::volume);
+      if(mdi::change_rho){
+         printf("# Density: %f (changed)\n",mdi::density);
       }else{
-         printf("# Density: %f (unchanged)\n",density);
+         printf("# Density: %f (unchanged)\n",mdi::density);
       }
-      if(t_constat){
-         printf("# Constant T run with T =: %f \n",t_constat);
+      if(mdi::t_constat){
+         printf("# Constant T run with T =: %f \n",mdi::t_constat);
       }else{
          printf("# Free evolution run\n");
       }
-      printf("# skin: %f maximum neighbor list length: %i \n",skin,max_list_length
+      printf("# skin: %f maximum neighbor list length: %i \n",mdi::skin,mdi::max_list_length
 );
       
       printf("#\n");

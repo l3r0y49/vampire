@@ -19,6 +19,7 @@
 
 // molecular_dynamics module headers
 #include "internal.hpp"
+namespace mdi=molecular_dynamics::internal;
 
 namespace molecular_dynamics{
    
@@ -38,10 +39,10 @@ namespace molecular_dynamics{
             rm_6 = pow(rm_2,3);   //1/r^6
             rm_12 = pow(rm_6,3);  //1/r^12
             
-            phi_tab[i+1] = 4.0*(rm_12-rm_6)-phi_cuttoff;  //4(1/r^12 - 1/r^6)-phi(Rc)
+            mdi::phi_tab[i+1] = 4.0*(rm_12-rm_6)-phi_cuttoff;  //4(1/r^12 - 1/r^6)-phi(Rc)
             
             //d_phi = -(1/r)(dv/dr)
-            d_phi_tab[i+1] = 24.0*rm_2*(2.0*rm_12-rm_6);  //24(1/r^14 - 1/r^8)
+            mdi::d_phi_tab[i+1] = 24.0*rm_2*(2.0*rm_12-rm_6);  //24(1/r^14 - 1/r^8)
          }
          return;
       }
@@ -55,16 +56,16 @@ namespace molecular_dynamics{
          int i,j,k,l,m;
          
          //reset force, potental energy and virial terms
-         accelerations.resize(0,std::vector<double>(0));
-         accelerations.resize(dimensions,std::vector<double>(N));
-         energy_potental.resize(0);
-         energy_potental.resize(N);
-         virial=0.0;
+         mdi::accelerations.resize(0,std::vector<double>(0));
+         mdi::accelerations.resize(dimensions,std::vector<double>(N));
+         mdi::energy_potental.resize(0);
+         mdi::energy_potental.resize(N);
+         mdi::virial=0.0;
          
-         for(i=0;i<N;i++){
+         for(i=0;i<mdi::N;i++){
             //useful part of neighbour list
-            for(l=marker_1[i];l<=marker_2[i];l++){
-               j = list[l];
+            for(l=mdi::marker_1[i];l<=mdi::marker_2[i];l++){
+               j = mdi::list[l];
                
                //reset 1d position vector containers values without deallocating memory
 //                temp_1d_pos_1.resize(0);
@@ -77,7 +78,7 @@ namespace molecular_dynamics{
 //                populate_1d_with_column_doubles(temp_1d_pos_j,positions,j);
                //distance between i and j
 //                sij = temp_1d_pos_i - temp_1d_pos_j;
-               sij = positions[i] - positions[j];
+               sij = mdi::positions[i] - mdi::positions[j];
                
                //apply boundary conditions where needed
                for(m=0;m<sij.size();m++){
@@ -88,41 +89,46 @@ namespace molecular_dynamics{
                   }
                }
                
-               //==============errors=================== - need to mutiply 2d vectors
-               rij=box_size*sij;  //real space units
+               //==============errors=================== - need to mutiply 2d vectors -- for loop??
+               rij=mdi::box_size[0]*sij;  //real space units
                r_sqij=std::inner_product(rij.begin(),rij.end(),rij.begin(),0);  //square distance
                //========================================
                
-               if(r_sqij < pow(r_cuttoff,2)){   //are particles interacting?
+               if(r_sqij < pow(mdi::r_cuttoff,2)){   //are particles interacting?
                   rk = (r_sqij - r_sq_min)* inv_delat_r_sq +1.0; // "continuous index in tables"
                   k= int(rk);    //descrete index
                   if(k<1){
                      k = 1;      //to protect
                   }
                   weight = rk - double(k);            //fractional part [0,1]
-                  phi = weight* phi_tab[k+1] + (1.0-weight)* phi_tab[k]; //linear interpolation
-                  d_phi = weight* d_phi_tab[k+1] + (1.0-weight)* d_phi_tab[k];
-                  energy_potental[i] += 0.5*phi;     //accumulate energy
-                  energy_potental[j] += 0.5*phi;     //shared bewteen i&j
-                  virial -= d_phi*r_sqij;             //accum. virial sum r(dv/dr)
-                  acc[i] += d_phi*sij;                //accum. forces (Fij = -Fji)
-                  acc[j] -= d_phi*sij; 
+                  phi = weight* mdi::phi_tab[k+1] + (1.0-weight)* mdi::phi_tab[k]; //linear interpolation
+                  d_phi = weight* mdi::d_phi_tab[k+1] + (1.0-weight)* mdi::d_phi_tab[k];
+                  mdi::energy_potental[i] += 0.5*phi;     //accumulate energy
+                  mdi::energy_potental[j] += 0.5*phi;     //shared bewteen i&j
+                  mdi::virial -= d_phi*r_sqij;             //accum. virial sum r(dv/dr)
+                  mdi::acc[i] += d_phi*sij;                //accum. forces (Fij = -Fji)
+                  mdi::acc[j] -= d_phi*sij; 
                }
             }
          }
-      virial = -virial/dimensions;                    //virial term
+      mdi::virial = -mdi::virial/mdi::dimensions;                    //virial term
       }
       
       void compute_temperature(double energy_kin_aver,double temperature){
-         std::vector<double> real_vel;
+         std::vector<double> real_vel(mdi::dimensions);
          int i;
          
-         for(i=0;i<N;i++){ //ob1 error?
-            real_vel = box_size*vel[i];
-            energy_kinetic[i] = 0.5*std::inner_product(real_vel.begin(),real_vel.end(),real_vel.begin(),0);
+         for(i=0;i<mdi::N;i++){ //ob1 error?
+            
+            //for rool required need sum of all velcitites
+            
+            //vector operation
+            real_vel = mdi::box_size*mdi::velocities[i];
+
+            mdi::energy_kinetic[i] = 0.5*std::inner_product(real_vel.begin(),real_vel.end(),real_vel.begin(),0);
          }
-         energy_kin_aver = std::accumulate(energy_kinetic.begin(), energy_kinetic.end(),0)/N;
-         temperature = 2.0*energy_kin_aver/dimensions;
+         energy_kin_aver = std::accumulate(mdi::energy_kinetic.begin(),mdi::energy_kinetic.end(),0)/mdi::N;
+         temperature = 2.0*energy_kin_aver/mdi::dimensions;
       }
       
    }
