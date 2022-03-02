@@ -116,7 +116,7 @@ namespace molecular_dynamics{
                
                //update displacement list
                for(i=0;i<mdi::N;i++){
-                  mdi::dispalcement_list[i] = mdi::dispalcement_list[j] + mdi::box_size*mdi::displacement[j];
+                  mdi::dispalcement_list[i] = mdi::dispalcement_list[j] + mdi::box_size*mdi::dispalcement[j];
                }
                //deterioration test, if moved too much relative to skin
                //list update scheduled for next step

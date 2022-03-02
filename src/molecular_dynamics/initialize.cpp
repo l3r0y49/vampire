@@ -35,7 +35,7 @@ namespace moleculardynamics{
       }
    
    void initalize_values(){
-      std::vector<double>pos_at_real(dimensions), mass_center(dimensions);
+      std::vector<double>pos_at_real(mdi::dimensions), mass_center(mdi::dimensions);
       double scale,x_sum,y_sum,z_sum;
       int i;
       
@@ -55,20 +55,20 @@ namespace moleculardynamics{
       }
       
       //can now allocate arrays with atomic info
-      mdi::dispalcement.resize(dimensions,std::vector<double>(N));
-      mdi::positions.resize(dimensions,std::vector<double>(N));
-      mdi::velocities.resize(dimensions,std::vector<double>(N));
-      mdi::accelerations.resize(dimensions,std::vector<double>(N));
-      mdi::energy_potental.resize(N);
-      mdi::energy_kinetic.resize(N);
+      mdi::dispalcement.resize(dimensions,std::vector<double>(mdi::N));
+      mdi::positions.resize(dimensions,std::vector<double>(mdi::N));
+      mdi::velocities.resize(dimensions,std::vector<double>(mdi::N));
+      mdi::accelerations.resize(dimensions,std::vector<double>(mdi::N));
+      mdi::energy_potental.resize(mdi::N);
+      mdi::energy_kinetic.resize(mdi::N);
       
       //and neighbor list
-      mdi::max_list_length = max_pairs_per_atom*N;
-      mdi::list.resize(max_list_length);
-      mdi::advance.resize(N);
-      mdi::marker_1.resize(N);
-      mdi::marker_2.resize(N);
-      mdi::dispalcement_list.resize(dimensions,std::vector<double>(N));
+      mdi::max_list_length = mdi::max_pairs_per_atom*mdi::N;
+      mdi::list.resize(mdi::max_list_length);
+      mdi::advance.resize(mdi::N);
+      mdi::marker_1.resize(mdi::N);
+      mdi::marker_2.resize(mdi::N);
+      mdi::dispalcement_list.resize(dimensions,std::vector<double>(mdi::N));
       
       //positions written to array in gen_coords file
       //don't need to manage velocities and accelerations as they are all now kept internal
@@ -103,9 +103,9 @@ namespace moleculardynamics{
       mdi::nz=4;
       mdi::dispalc=0.1;
       
-      mdi::box_size[0]=nx;
-      mdi::box_size[1]=ny;
-      mdi::box_size[2]=nz;
+      mdi::box_size[0]=mdi::nx;
+      mdi::box_size[1]=mdi::ny;
+      mdi::box_size[2]=mdi::nz;
 
       //simulation values
       //hardwired values to be read in from file once file I/O implemented

@@ -79,13 +79,13 @@ namespace molecular_dynamics{
                         sij[m]+=1.0;
                   }
                }
-               rij=mdi::box_size[0]*sij;  //real space units
+               rij=mdi::box_size*sij;  //real space units
                r_sqij=std::inner_product(rij.begin(),rij.end(),rij.begin(),0);  //square distance
                
                if(r_sqij<range_sq){ //is j an neighbour of i?
-                  box_size[0]advance[j]=1.0;    //yes
+                  mdi::advance[j]=1.0;    //yes
                }else{
-                  box_size[0]advance[j]=0.0;     //no
+                  mdi::advance[j]=0.0;     //no
                }
             }
             mdi::marker_1[i]=l;          //start list for i

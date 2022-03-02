@@ -106,8 +106,8 @@ namespace molecular_dynamics{
                   mdi::energy_potental[i] += 0.5*phi;     //accumulate energy
                   mdi::energy_potental[j] += 0.5*phi;     //shared bewteen i&j
                   mdi::virial -= d_phi*r_sqij;             //accum. virial sum r(dv/dr)
-                  mdi::acc[i] += d_phi*sij;                //accum. forces (Fij = -Fji)
-                  mdi::acc[j] -= d_phi*sij; 
+                  mdi::accelerations[i] += d_phi*sij;                //accum. forces (Fij = -Fji)
+                  mdi::accelerations[j] -= d_phi*sij; 
                }
             }
          }
