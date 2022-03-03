@@ -50,7 +50,7 @@ namespace molecular_dynamics{
       void generate_crystal(){
          //double atomic_lattice,int nx,int ny,int nz,double dispalc - use mdi:: namespace variables
          const int crtout = 6;
-//          std::vector<double>rands(3);
+         std::vector<double>rands(3);
          int i,j,k,l,N_count;
          double x,y,z;
          const int nbase = 4; //atoms in fcc cell
@@ -81,11 +81,14 @@ namespace molecular_dynamics{
                      random_generators[2].seed(l*k);
                      
                      //generate array with 3 rn
-//                      rands = {random_generators[0].grnd(),random_generators[1].grnd(),random_generators[2].grnd()};
+                     rands = {random_generators[0].grnd(),random_generators[1].grnd(),random_generators[2].grnd()};
                      
-                     x = mdi::atomic_lattice*(i + rcell[1,l]) + 2.0*mdi::dispalc*(random_generators[0].grnd()-0.5);
-                     y = mdi::atomic_lattice*(j + rcell[2,l]) + 2.0*mdi::dispalc*(random_generators[1].grnd()-0.5);
-                     z = mdi::atomic_lattice*(k + rcell[3,l]) + 2.0*mdi::dispalc*(random_generators[2].grnd()-0.5);
+                     x = mdi::atomic_lattice*(double(i) + rcell[1,l]) + 2.0*mdi::dispalc *(rands[0]-0.5);
+                     
+                     
+                     y = mdi::atomic_lattice*(double(j) + rcell[2,l]) + 2.0*mdi::dispalc *(rands[1]-0.5);
+                     
+                     z = mdi::atomic_lattice*(double(k) + rcell[3,l]) + 2.0*mdi::dispalc *(rands[2]-0.5);
             
                      //write direct to positions array
                      mdi::positions[N_count] = {x/mdi::box_size[0],y/mdi::box_size[2],z/mdi::box_size[2]};

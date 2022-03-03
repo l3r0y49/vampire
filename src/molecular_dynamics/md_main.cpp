@@ -36,9 +36,9 @@ namespace molecular_dynamics{
          //inital printout
          inital_printout();
          //equaliberation run
-         evolve_sample(N_equi_steps);
+         evolve_sample(mdi::N_equi_steps);
          //production run
-         evolve_sample(N_prod_steps);
+         evolve_sample(mdi::N_prod_steps);
          //end run
          terminate();
       }       

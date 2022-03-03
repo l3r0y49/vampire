@@ -78,7 +78,20 @@ namespace molecular_dynamics{
 //                populate_1d_with_column_doubles(temp_1d_pos_j,positions,j);
                //distance between i and j
 //                sij = temp_1d_pos_i - temp_1d_pos_j;
-               sij = mdi::positions[i] - mdi::positions[j];
+               
+               //dimensions check
+               if(dimensions==3){
+                  sij[0] = mdi::positions[i][0] - mdi::positions[j][0];
+                  sij[1] = mdi::positions[i][1] - mdi::positions[j][1];
+                  sij[2] = mdi::positions[i][2] - mdi::positions[j][2];
+               }else if(dimensions==2){
+                  sij[0] = mdi::positions[i][0] - mdi::positions[j][0];
+                  sij[1] = mdi::positions[i][1] - mdi::positions[j][1];
+               }else{
+                  printf("FATAL ERROR: dimensions %i is < 2 \n",mdi::N);
+                  std::exit;
+               }
+               
                
                //apply boundary conditions where needed
                for(m=0;m<sij.size();m++){
@@ -91,7 +104,9 @@ namespace molecular_dynamics{
                
                //==============errors=================== - need to mutiply 2d vectors -- for loop??
                rij=mdi::box_size[0]*sij;  //real space units
+               
                r_sqij=std::inner_product(rij.begin(),rij.end(),rij.begin(),0);  //square distance
+               
                //========================================
                
                if(r_sqij < pow(mdi::r_cuttoff,2)){   //are particles interacting?

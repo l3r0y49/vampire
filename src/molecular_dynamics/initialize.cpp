@@ -41,6 +41,7 @@ namespace moleculardynamics{
       
       if(mdi::N <=0 ){
          printf("FATAL ERROR: N is %i \n",mdi::N);
+         std::exit;
       }
       
       //compute volume and density, do not change in run
