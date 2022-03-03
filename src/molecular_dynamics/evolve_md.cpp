@@ -14,6 +14,7 @@
 #include <cmath>
 #include <numeric>
 #include <vector>
+#include <algorithm>
 
 // Vampire headers
 #include "molecular_dynamics.hpp"
@@ -29,8 +30,7 @@ namespace molecular_dynamics{
          //----------------------------------------------------------------------------
          // Function to assess the two largest displacements of the system, if their sum is larger than skin returns true
          //----------------------------------------------------------------------------
-         moved_too_much(skin){
-            double skin;
+         bool moved_too_much(double skin){
             double displ;
             double displ1=0.0;
             double displ2=0.0;
@@ -72,7 +72,7 @@ namespace molecular_dynamics{
             int step,i;
             double ene_kin_aver,ene_pot_aver,ene_tot_aver,temperature,pressure,chi;
             bool list_update_requested = true;
-            std::vector<double> dispalcement_sqr
+            std::vector<double> dispalcement_sqr;
             
             compute_temperature(ene_kin_aver,temperature);
             
@@ -85,7 +85,7 @@ namespace molecular_dynamics{
                //genarate square of displacements
                
                //errors================================================== need for loop
-               std::transform(mdi::dispalcement.begin(),mdi::dispalcement.end(),dispalcement_sqr,multiplies<double>());
+               std::transform(mdi::dispalcement.begin(),mdi::dispalcement.end(),dispalcement_sqr,std::multiplies<double>());
                mdi::dispalcement =mdi::dispalcement*mdi::velocities + 0.5*(mdi::dispalcement)*mdi::accelerations;   //dr = r(t+dt) -r (t)
                
                mdi::positions += mdi::dispalcement;  // r(t+dt)
@@ -116,7 +116,7 @@ namespace molecular_dynamics{
                
                //update displacement list
                for(i=0;i<mdi::N;i++){
-                  mdi::dispalcement_list[i] = mdi::dispalcement_list[j] + mdi::box_size*mdi::dispalcement[j];
+                  mdi::dispalcement_list[i] = mdi::dispalcement_list[i] + mdi::box_size*mdi::dispalcement[i];
                }
                //deterioration test, if moved too much relative to skin
                //list update scheduled for next step

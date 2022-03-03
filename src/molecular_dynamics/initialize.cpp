@@ -27,10 +27,10 @@ namespace moleculardynamics{
       //----------------------------------------------------------------------------
       // Function to initialize molecular_dynamics module
       //----------------------------------------------------------------------------
-      void initialize(){
+   void initialize(){
       
          // call md driver
-         main_md();
+         mdi::md_main();      //ask why this works
          return;
       }
    
@@ -55,10 +55,10 @@ namespace moleculardynamics{
       }
       
       //can now allocate arrays with atomic info
-      mdi::dispalcement.resize(dimensions,std::vector<double>(mdi::N));
-      mdi::positions.resize(dimensions,std::vector<double>(mdi::N));
-      mdi::velocities.resize(dimensions,std::vector<double>(mdi::N));
-      mdi::accelerations.resize(dimensions,std::vector<double>(mdi::N));
+      mdi::dispalcement.resize(mdi::dimensions,std::vector<double>(mdi::N));
+      mdi::positions.resize(mdi::dimensions,std::vector<double>(mdi::N));
+      mdi::velocities.resize(mdi::dimensions,std::vector<double>(mdi::N));
+      mdi::accelerations.resize(mdi::dimensions,std::vector<double>(mdi::N));
       mdi::energy_potental.resize(mdi::N);
       mdi::energy_kinetic.resize(mdi::N);
       
@@ -68,7 +68,7 @@ namespace moleculardynamics{
       mdi::advance.resize(mdi::N);
       mdi::marker_1.resize(mdi::N);
       mdi::marker_2.resize(mdi::N);
-      mdi::dispalcement_list.resize(dimensions,std::vector<double>(mdi::N));
+      mdi::dispalcement_list.resize(mdi::dimensions,std::vector<double>(mdi::N));
       
       //positions written to array in gen_coords file
       //don't need to manage velocities and accelerations as they are all now kept internal
@@ -140,7 +140,7 @@ namespace moleculardynamics{
          printf("# Density: %f (unchanged)\n",mdi::density);
       }
       if(mdi::t_constat){
-         printf("# Constant T run with T =: %f \n",mdi::t_constat);
+         printf("# Constant T run with T =: %f \n",mdi::t_requested);
       }else{
          printf("# Free evolution run\n");
       }

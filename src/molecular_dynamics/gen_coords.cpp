@@ -25,27 +25,27 @@ namespace molecular_dynamics{
 
    namespace internal{
       
-      class rng{
-         
-         std::mt19937 mt;  //mersenne twister
-         std::uniform_real_distribution<double> dist;
-         
-      public:
-         
-         //seed rng
-         
-         void seed(unsigned int random_seed){
-            dist = std::uniform_real_distribution<double>(0.0,1.0);
-            std::mt19937::result_type mt_seed = random_seed;
-            mt.seed(mt_seed); //seed gen
-         }
-         
-         //wrapper function
-         double grnd(){
-            return dist(mt);
-            
-         }
-      };
+//       class rng{
+//          
+//          std::mt19937 mt;  //mersenne twister
+//          std::uniform_real_distribution<double> dist;
+//          
+//       public:
+//          
+//          //seed rng
+//          
+//          void internal::seed(unsigned int random_seed){
+//             dist = std::uniform_real_distribution<double>(0.0,1.0);
+//             std::mt19937::result_type mt_seed = random_seed;
+//             mt.seed(mt_seed); //seed gen
+//          }
+//          
+//          //wrapper function
+//          double grnd(){
+//             return dist(mt);
+//             
+//          }
+//       };
          
       void generate_crystal(){
          //double atomic_lattice,int nx,int ny,int nz,double dispalc - use mdi:: namespace variables
@@ -83,9 +83,9 @@ namespace molecular_dynamics{
                      //generate array with 3 rn
 //                      rands = {random_generators[0].grnd(),random_generators[1].grnd(),random_generators[2].grnd()};
                      
-                     x = mdi::atomic_lattice*(i + rcell[1,L]) + 2.0*mdi::dispalc[random_generators[0].grnd()-0.5];
-                     y = mdi::atomic_lattice*(j + rcell[2,L]) + 2.0*mdi::dispalc[random_generators[1].grnd()-0.5];
-                     z = mdi::atomic_lattice*(k + rcell[3,L]) + 2.0*mdi::dispalc[random_generators[2].grnd()-0.5];
+                     x = mdi::atomic_lattice*(i + rcell[1,l]) + 2.0*mdi::dispalc*(random_generators[0].grnd()-0.5);
+                     y = mdi::atomic_lattice*(j + rcell[2,l]) + 2.0*mdi::dispalc*(random_generators[1].grnd()-0.5);
+                     z = mdi::atomic_lattice*(k + rcell[3,l]) + 2.0*mdi::dispalc*(random_generators[2].grnd()-0.5);
             
                      //write direct to positions array
                      mdi::positions[N_count] = {x/mdi::box_size[0],y/mdi::box_size[2],z/mdi::box_size[2]};
@@ -94,7 +94,7 @@ namespace molecular_dynamics{
                      mdi::energy_kinetic[N_count]=0.0;
                      mdi::velocities[N_count]={0.0,0.0,0.0};
                      mdi::accelerations[N_count]={0.0,0.0,0.0};
-                     mdi::N_count++;
+                     N_count++;
                   }
                }
             }

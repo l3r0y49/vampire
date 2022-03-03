@@ -122,19 +122,26 @@ namespace molecular_dynamics{
        const double cut_off_LJ = 2.5;
        const double cut_off_Al = 5.55805441821810;
       
-       class rng{
+      class rng{
          
          std::mt19937 mt;  //mersenne twister
          std::uniform_real_distribution<double> dist;
          
-       public:
+      public:
          
          //seed rng
          
-         void seed(unsigned int random_seed);
+         void seed(unsigned int random_seed){
+            dist = std::uniform_real_distribution<double>(0.0,1.0);
+            std::mt19937::result_type mt_seed = random_seed;
+            mt.seed(mt_seed); //seed gen
+         }
          
          //wrapper function
-         double grnd();
+         double grnd(){
+            return dist(mt);
+            
+         }
       };
        
       //-----------------------------------------------------------------------------
@@ -182,7 +189,7 @@ namespace molecular_dynamics{
       void compute_temperature(double energy_kin_aver,double temperature);
       
       //evolve
-      bool moved_too_much(skin);
+      bool moved_too_much(double skin);
       void evolve_sample(int N_steps);
 //       void populate_1d_with_column_doubles(std::vector<int>& one_d_vector,std::vector<std::vector<int> >& two_d_vector,int index);
       
@@ -203,6 +210,7 @@ namespace molecular_dynamics{
       //initalise
       void inital_printout();
       void read_input();
+      void initalize_values();
 
    } // end of internal namespace
 

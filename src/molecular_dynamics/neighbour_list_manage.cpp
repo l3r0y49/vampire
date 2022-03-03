@@ -13,6 +13,7 @@
 // C++ standard library headers
 #include <cstdio>
 #include <cmath>
+#include <algorithm>
 // Vampire headers
 #include "molecular_dynamics.hpp"
 
@@ -79,7 +80,10 @@ namespace molecular_dynamics{
                         sij[m]+=1.0;
                   }
                }
-               rij=mdi::box_size*sij;  //real space units
+               
+               rij=std::transform( mdi::box_size.begin(), mdi::box_size.end(),sij.begin(),std::multiplies<double>() );
+               
+               
                r_sqij=std::inner_product(rij.begin(),rij.end(),rij.begin(),0);  //square distance
                
                if(r_sqij<range_sq){ //is j an neighbour of i?
